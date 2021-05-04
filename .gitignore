@@ -1,5 +1,7 @@
 #other files
 *.pdf
+temp/**
+
 # IntelliJ Idea
 .idea
 *.iml
