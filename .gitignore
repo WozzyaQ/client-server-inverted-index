@@ -1,3 +1,5 @@
+#other files
+*.pdf
 # IntelliJ Idea
 .idea
 *.iml
