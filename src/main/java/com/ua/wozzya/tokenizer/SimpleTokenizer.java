@@ -3,9 +3,10 @@ package com.ua.wozzya.tokenizer;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Simple tokenizer instan
+ * Simple tokenizer implementation
  */
 public class SimpleTokenizer implements Tokenizer{
     private final Token token;
@@ -15,6 +16,7 @@ public class SimpleTokenizer implements Tokenizer{
     }
 
     public SimpleTokenizer(Token token) {
+        Objects.requireNonNull(token);
         this.token = token;
     }
 

@@ -1,6 +1,9 @@
 package com.ua.wozzya.index;
 
 import com.ua.wozzya.extractor.FileNameExtractor;
+import com.ua.wozzya.tokenizer.SimpleTokenizer;
+import com.ua.wozzya.tokenizer.Token;
+import com.ua.wozzya.tokenizer.Tokenizer;
 import org.junit.*;
 
 import java.io.*;
@@ -87,7 +90,7 @@ public class InMemoryInvertedIndexTest {
 
     @Test
     public void shouldFindAndReturnFileName() throws IOException {
-        InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR);
+        InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR, new SimpleTokenizer(Token.WORD));
         index.buildIndex();
         List<String> result = index.search("finished");
 

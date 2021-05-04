@@ -11,7 +11,7 @@ public enum Token {
     /**
      * Default split token
      */
-    DEFAULT(" ",0),
+    DEFAULT("\\w+?",0),
 
     /**
      * Regex to match the word per se
