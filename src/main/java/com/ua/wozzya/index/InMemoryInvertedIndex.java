@@ -1,37 +1,62 @@
 package com.ua.wozzya.index;
 
-
-import com.ua.wozzya.Token;
 import com.ua.wozzya.extractor.Extractor;
+import com.ua.wozzya.tokenizer.Tokenizer;
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+/**
+ * Implementation of an single
+ * threaded, single-pass inverted index
+ * that processes data in-memory
+ */
 public class InMemoryInvertedIndex implements Index{
 
-    private Map<String, List<String>> index = new LinkedHashMap<>();
-    private Extractor<String> extractor;
+    private final Map<String, Set<String>> index = new HashMap<>();
+    private final Extractor<String> extractor;
+    private final Tokenizer tokenizer;
     private boolean ready = false;
 
+
     /**
-     *
-     * @param extractor - not-nilled extractor
+     * Initialize index with supplied extractor
+     * Need to manually build with {@link InMemoryInvertedIndex#buildIndex()}
+     * before starting to using
+     * @param extractor instance of {@link Extractor<String>}
      */
     public InMemoryInvertedIndex(Extractor<String> extractor) {
-        this(extractor, false);
+        this(extractor, Tokenizer.getDefault());
     }
 
-    public InMemoryInvertedIndex(Extractor<String> extractor, boolean autobuild) {
+    /**
+     * Initialize index with supplied extractor and tokenizer
+     * Need to manually build with {@link InMemoryInvertedIndex#buildIndex()}
+     * before starting to using
+     * @param extractor instance of {@link Extractor<String>}
+     * @param tokenizer instance of {@link Tokenizer}
+     */
+    public InMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer) {
+        this(extractor, tokenizer,false);
+    }
+
+    /**
+     * @param extractor instance of {@link Extractor<String>}
+     * @param tokenizer instance of {@link Tokenizer}
+     * @param autobuild build on instantiation
+     */
+    public InMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
         Objects.requireNonNull(extractor);
+        Objects.requireNonNull(tokenizer);
+
         this.extractor = extractor;
+        this.tokenizer = tokenizer;
 
         if(autobuild) buildIndex();
     }
 
-
-    private void buildIndex() {
+    public void buildIndex() {
         if(ready) return;
 
         List<String> fileNames = extractor.extract();
@@ -49,7 +74,7 @@ public class InMemoryInvertedIndex implements Index{
 
             String line;
             while((line = buffReader.readLine()) != null) {
-                String[] tokens = tokenize(line);
+                String[] tokens = tokenizer.tokenize(line);
                 store(tokens, file.getPath());
             }
 
@@ -60,28 +85,12 @@ public class InMemoryInvertedIndex implements Index{
 
     private void store(String[] tokens, String fileName) {
         for(String token : tokens) {
-            List<String> list = index.getOrDefault(token, new LinkedList<>());
-            list.add(fileName);
-            index.put(token, list);
+            Set<String> set = index.getOrDefault(token, new HashSet<>());
+            set.add(fileName);
+            index.put(token, set);
         }
     }
 
-    private String[] tokenize(String line) {
-        Pattern p = Pattern.compile(Token.UNIQUE_WORD_PATTERN);
-        Matcher m = p.matcher(line);
-
-        List<String> tokenList = new LinkedList<>();
-        while(m.find()) {
-            tokenList.add(m.group(Token.UNIQUE_WORD_GROUP_INDEX).toLowerCase());
-        }
-        return tokenList.toArray(new String[0]);
-    }
-
-    /**
-     *
-     * @param key - word to search
-     * @return - list of file names
-     */
     @Override
     public List<String> search(String key) {
         if(!ready) {
@@ -90,6 +99,9 @@ public class InMemoryInvertedIndex implements Index{
 
         Objects.requireNonNull(key);
         key = key.toLowerCase();
-        return index.getOrDefault(key, Collections.emptyList());
+        return index.getOrDefault(key, Collections.emptySet())
+                .stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

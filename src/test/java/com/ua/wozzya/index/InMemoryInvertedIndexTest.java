@@ -88,7 +88,7 @@ public class InMemoryInvertedIndexTest {
     @Test
     public void shouldFindAndReturnFileName() throws IOException {
         InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR);
-
+        index.buildIndex();
         List<String> result = index.search("finished");
 
         int expectedSize = 1;
@@ -105,6 +105,7 @@ public class InMemoryInvertedIndexTest {
     @Test
     public void shouldNotFindAndReturnEmptyList() {
         InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR);
+        index.buildIndex();
         List<String> result = index.search("gapldspld");
 
         int expectedSize = 0;
