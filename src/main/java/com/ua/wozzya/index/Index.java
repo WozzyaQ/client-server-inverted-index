@@ -11,4 +11,8 @@ public interface Index {
      * @return list of entries corresponding to key
      */
     List<String> search(String key);
+
+    void buildIndex();
+
+    boolean isReady();
 }

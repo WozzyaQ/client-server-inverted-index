@@ -1,8 +1,9 @@
 package com.ua.wozzya;
 
 import com.google.common.base.Stopwatch;
+import com.ua.wozzya.extractor.Extractor;
 import com.ua.wozzya.extractor.FileNameExtractor;
-import com.ua.wozzya.index.InMemoryInvertedIndex;
+import com.ua.wozzya.index.single.InMemoryInvertedIndexStandalone;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
 import com.ua.wozzya.tokenizer.Token;
 import com.ua.wozzya.tokenizer.Tokenizer;
@@ -26,7 +27,7 @@ public class App
 
         Stopwatch stopwatch = Stopwatch.createStarted();
         // create index
-        InMemoryInvertedIndex index = new InMemoryInvertedIndex(extractor, tokenizer, true);
+        InMemoryInvertedIndexStandalone index = new InMemoryInvertedIndexStandalone(extractor, tokenizer, true);
         stopwatch.stop();
         System.out.println("Build time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
@@ -35,6 +36,12 @@ public class App
         System.out.println(fileNames.size());
 
         // print all
-        fileNames.forEach(System.out::println);
+//        fileNames.forEach(System.out::println);
+        System.out.println(Runtime.getRuntime().availableProcessors());
+
+    }
+
+    public static void extractorExtractorTest(Extractor<String> extractor) {
+        extractor.extract().forEach(System.out::println);
     }
 }

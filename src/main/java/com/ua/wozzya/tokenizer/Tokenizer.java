@@ -1,9 +1,11 @@
 package com.ua.wozzya.tokenizer;
 
+import com.ua.wozzya.index.single.InMemoryInvertedIndexStandalone;
+
 /**
  * Common interface for tokenizers
  * Instance of that interface are used
- * in {@link com.ua.wozzya.index.InMemoryInvertedIndex} class
+ * in {@link InMemoryInvertedIndexStandalone} class
  * to retrieve tokens from the string
  * @author V. Chaykovsky
  */

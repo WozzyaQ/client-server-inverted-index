@@ -1,6 +1,8 @@
-package com.ua.wozzya.index;
+package com.ua.wozzya.index.single;
 
 import com.ua.wozzya.extractor.FileNameExtractor;
+import com.ua.wozzya.index.Index;
+import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
 import com.ua.wozzya.tokenizer.Token;
 import com.ua.wozzya.tokenizer.Tokenizer;
@@ -15,7 +17,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
-public class InMemoryInvertedIndexTest {
+public class InMemoryInvertedIndexStandaloneTest {
 
     static final String CONTENT = "Process finished with exit code 0";
     static final String TEMP_FILE_NAME = "temp.txt";
@@ -84,14 +86,18 @@ public class InMemoryInvertedIndexTest {
 
     @Test(expected = IllegalStateException.class)
     public void shouldThrowIllegalWhenTryingToFindWithoutBuilding() {
-        InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR);
+        IndexBuilder builder = new InMemoryIndexBuilder();
+        builder.setAutoBuild(false).setExtractor(EXTRACTOR).setTokenizer(new SimpleTokenizer(Token.WORD));
+        Index index = builder.build();
         index.search("some-word");
     }
 
     @Test
-    public void shouldFindAndReturnFileName() throws IOException {
-        InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR, new SimpleTokenizer(Token.WORD));
-        index.buildIndex();
+    public void shouldFindAndReturnFileName()  {
+        IndexBuilder builder = new InMemoryIndexBuilder();
+        builder.setAutoBuild(true).setExtractor(EXTRACTOR).setTokenizer(new SimpleTokenizer(Token.WORD));
+        Index index = builder.build();
+
         List<String> result = index.search("finished");
 
         int expectedSize = 1;
@@ -107,7 +113,9 @@ public class InMemoryInvertedIndexTest {
 
     @Test
     public void shouldNotFindAndReturnEmptyList() {
-        InMemoryInvertedIndex index = new InMemoryInvertedIndex(EXTRACTOR);
+        IndexBuilder builder = new InMemoryIndexBuilder();
+        builder.setExtractor(EXTRACTOR).setTokenizer(new SimpleTokenizer(Token.WORD));
+        Index index = builder.build();
         index.buildIndex();
         List<String> result = index.search("gapldspld");
 

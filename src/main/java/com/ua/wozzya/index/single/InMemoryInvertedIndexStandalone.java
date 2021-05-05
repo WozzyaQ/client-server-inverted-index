@@ -1,6 +1,8 @@
-package com.ua.wozzya.index;
+package com.ua.wozzya.index.single;
 
 import com.ua.wozzya.extractor.Extractor;
+import com.ua.wozzya.index.AbstractIndex;
+import com.ua.wozzya.index.Index;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
 import java.io.*;
@@ -12,59 +14,41 @@ import java.util.stream.Collectors;
  * threaded, single-pass inverted index
  * that processes data in-memory
  */
-public class InMemoryInvertedIndex implements Index{
+public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
-    private final Map<String, Set<String>> index = new HashMap<>();
-    private final Extractor<String> extractor;
-    private final Tokenizer tokenizer;
-    private boolean ready = false;
+    private boolean isReady;
+    private Map<String, Set<String>> index;
 
+    public InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
+        super(extractor, tokenizer);
 
-    /**
-     * Initialize index with supplied extractor
-     * Need to manually build with {@link InMemoryInvertedIndex#buildIndex()}
-     * before starting to using
-     * @param extractor instance of {@link Extractor<String>}
-     */
-    public InMemoryInvertedIndex(Extractor<String> extractor) {
-        this(extractor, Tokenizer.getDefault());
+        if(autobuild) {
+            buildIndex();
+        }
     }
 
-    /**
-     * Initialize index with supplied extractor and tokenizer
-     * Need to manually build with {@link InMemoryInvertedIndex#buildIndex()}
-     * before starting to using
-     * @param extractor instance of {@link Extractor<String>}
-     * @param tokenizer instance of {@link Tokenizer}
-     */
-    public InMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer) {
-        this(extractor, tokenizer,false);
+    @Override
+    protected void initIndex() {
+        index = new HashMap<>();
     }
 
-    /**
-     * @param extractor instance of {@link Extractor<String>}
-     * @param tokenizer instance of {@link Tokenizer}
-     * @param autobuild build on instantiation
-     */
-    public InMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
-        Objects.requireNonNull(extractor);
-        Objects.requireNonNull(tokenizer);
-
-        this.extractor = extractor;
-        this.tokenizer = tokenizer;
-
-        if(autobuild) buildIndex();
-    }
-
+    @Override
     public void buildIndex() {
-        if(ready) return;
+        if(isReady) return;
+
+        initIndex();
 
         List<String> fileNames = extractor.extract();
 
         for (String fileName : fileNames) {
             collectFromFileAndStore(new File(fileName));
         }
-        ready = true;
+        isReady = true;
+    }
+
+    @Override
+    public boolean isReady() {
+        return isReady;
     }
 
     private void collectFromFileAndStore(File file) {
@@ -93,7 +77,7 @@ public class InMemoryInvertedIndex implements Index{
 
     @Override
     public List<String> search(String key) {
-        if(!ready) {
+        if(!isReady) {
             throw new IllegalStateException("index should be built before calling search");
         }
 
