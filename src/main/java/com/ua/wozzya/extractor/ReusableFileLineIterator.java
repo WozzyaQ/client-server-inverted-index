@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Implements iterator-like behaviour associated with iterating
+ * through the lines in the file, specified in {@link ReusableFileLineIterator#setPathToFile}.
+ *
+ * Can be used multiple times if new {@link ReusableFileLineIterator#pathToFile} was supplied
+ *
+ * Automatically extracts all the lines from {@link ReusableFileLineIterator#pathToFile}
+ * on {@link ReusableFileLineIterator#setPathToFile(String)} method invocation.
+ */
 public class ReusableFileLineIterator implements FileLineIterator {
     private String pathToFile;
     private List<String> lines = new ArrayList<>();

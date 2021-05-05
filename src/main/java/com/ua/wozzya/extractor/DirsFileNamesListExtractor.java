@@ -38,25 +38,27 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
     @Override
     public List<String> extract() {
         if (fileNames.isEmpty()) {
-            doExtract();
+            extractFromAllPaths();
         }
         return fileNames;
     }
 
-    private void doExtract() {
+    private void extractFromAllPaths() {
         for (String path : paths) {
-            extractFromDir(path, new File(path));
+            extractFromPath(path, new File(path));
         }
     }
 
-    public void extractFromDir(String from, File dir) {
+    public void extractFromPath(String from, File dir) {
         File[] files = dir.listFiles();
+        //if contains file
         if (files != null) {
             for (File file : files) {
-
+                //recursive search if directory
                 if (file.isDirectory()) {
-                    extractFromDir(from + file.getName() + "/", file);
-                } else {
+                    extractFromPath(from + file.getName() + "/", file);
+                }
+                else {
                     fileNames.add(from + file.getName());
                 }
             }
