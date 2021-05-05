@@ -35,6 +35,11 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     }
 
     @Override
+    public boolean isReady() {
+        return readyMarker;
+    }
+
+    @Override
     public void buildIndex() {
         if (readyMarker) {
             throw new IllegalStateException("build method cannot be invoked twice");
@@ -42,6 +47,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
         initIndex();
 
+        //extract all fileNames
         List<String> fileNames = listExtractor.extract();
 
         for (String fileName : fileNames) {
@@ -49,11 +55,6 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         }
 
         readyMarker = true;
-    }
-
-    @Override
-    public boolean isReady() {
-        return readyMarker;
     }
 
     private void collectFromFileAndStore(String fileName) {
@@ -80,7 +81,6 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         buildCheck();
         return getPair(key).getRight();
     }
-
 
     @Override
     public long getFrequency(String key) {

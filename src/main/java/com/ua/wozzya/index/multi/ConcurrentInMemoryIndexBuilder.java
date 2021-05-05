@@ -5,21 +5,9 @@ import com.ua.wozzya.index.Index;
 
 public class ConcurrentInMemoryIndexBuilder extends AbstractIndexBuilder implements ConcurrentIndexBuilder {
 
-    public static final int DEFAULT_PARALLEL_SECTIONS = 1;
     public static final int MAX_THREAD_NUM = 20;
 
-    private int parallelAccessSections = DEFAULT_PARALLEL_SECTIONS;
     private int threadNum = Runtime.getRuntime().availableProcessors();
-
-
-    @Override
-    public void setParallelAccessSections(int sections) {
-        if (sections <= 0) {
-            throw new IllegalArgumentException("amount of sections should be >= 1");
-        }
-
-        this.parallelAccessSections = sections;
-    }
 
     @Override
     public void setNumberOfProcessingThreads(int threadNum) {
@@ -32,6 +20,10 @@ public class ConcurrentInMemoryIndexBuilder extends AbstractIndexBuilder impleme
 
     @Override
     public Index build() {
-        return new ConcurrentInMemoryInvertedIndex(listExtractor, tokenizer, iteratorFileLineExtractor, parallelAccessSections, threadNum, autoBuild);
+        return new ConcurrentInMemoryInvertedIndex(listExtractor,
+                tokenizer,
+                iteratorFileLineExtractor,
+                threadNum,
+                autoBuild);
     }
 }

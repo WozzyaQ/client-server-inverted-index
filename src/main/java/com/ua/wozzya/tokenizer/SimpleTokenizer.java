@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Simple tokenizer implementation
  */
-public class SimpleTokenizer implements Tokenizer{
+public class SimpleTokenizer implements Tokenizer {
     private final Token token;
 
     public SimpleTokenizer() {
@@ -26,7 +26,7 @@ public class SimpleTokenizer implements Tokenizer{
         var m = p.matcher(text);
 
         List<String> tokenList = new LinkedList<>();
-        while(m.find()) {
+        while (m.find()) {
             tokenList.add(m.group(token.getGroupIndex()).toLowerCase());
         }
         return tokenList.toArray(new String[0]);
