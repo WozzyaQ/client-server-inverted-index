@@ -5,5 +5,9 @@ package com.ua.wozzya.extractor;
  */
 @FunctionalInterface
 public interface Extractor<T> {
+    /**
+     * Extracts all the content
+     * @return
+     */
     T extract();
 }

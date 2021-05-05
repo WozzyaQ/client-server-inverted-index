@@ -70,4 +70,13 @@ public class ReusableFileLineIterator implements FileLineIterator {
 
         return lines.get(cursor++);
     }
+
+    @Override
+    public String extract() {
+        StringBuilder sb = new StringBuilder();
+        while (hasNext()){
+            sb.append(next()).append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
 }
