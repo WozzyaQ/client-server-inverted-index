@@ -92,12 +92,8 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
             //in concurrent line extraction
             FileLineIterator extractor = fileReader.getClass().getConstructor().newInstance();
             extractor.setPathToFile(fileName);
-
-            while (extractor.hasNext()) {
-                String[] tokens = tokenizer.tokenize(extractor.next());
-                store(tokens, fileName);
-            }
-
+            String[] tokens = tokenizer.tokenize(extractor.extract());
+            store(tokens, fileName);
 
         } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();

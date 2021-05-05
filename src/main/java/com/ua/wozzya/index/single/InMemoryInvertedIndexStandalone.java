@@ -59,10 +59,8 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     private void collectFromFileAndStore(String fileName) {
         fileReader.setPathToFile(fileName);
-        while (fileReader.hasNext()) {
-            String[] tokens = tokenizer.tokenize(fileReader.next());
-            store(tokens, fileName);
-        }
+        String[] tokens = tokenizer.tokenize(fileReader.extract());
+        store(tokens,fileName);
     }
 
     private void store(String[] tokens, String fileName) {
