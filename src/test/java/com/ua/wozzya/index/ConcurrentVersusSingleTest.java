@@ -2,7 +2,7 @@ package com.ua.wozzya.index;
 
 import com.ua.wozzya.extractor.ListExtractor;
 import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
-import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.multi.ConcurrentInMemoryIndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
@@ -23,7 +23,7 @@ public class ConcurrentVersusSingleTest {
     Index single;
     Index multi;
 
-    ReusableIteratorFileFileLineExtractor lineExtractor = new ReusableIteratorFileFileLineExtractor();
+    ReusableFileLineIterator lineExtractor = new ReusableFileLineIterator();
     Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
     String[] directories = {"test/", "train/"};
     ListExtractor<String> fileNameListExtractor = DirsFileNamesListExtractor.createExtractor(directories);
@@ -85,7 +85,7 @@ public class ConcurrentVersusSingleTest {
 
     @Test
     public void concurrentShouldBeFasterThanSingleInMostCases() {
-        int runs = 100;
+        int runs = 10;
 
         int singleWins = 0;
         int multiWins = 0;

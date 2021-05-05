@@ -1,7 +1,7 @@
 package com.ua.wozzya.index.single;
 
 import com.ua.wozzya.index.TestIndexUtils;
-import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
@@ -37,7 +37,7 @@ public class InMemoryInvertedIndexStandaloneTest {
         }
 
         assertNotNull(actualContent);
-        assertEquals(CONTENT, actualContent);
+        assertEquals(SINGLE_LINE_CONTENT, actualContent);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class InMemoryInvertedIndexStandaloneTest {
         builder.setAutoBuild(true);
         builder.setFileNameListExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
-        builder.setFileLineExtractor(new ReusableIteratorFileFileLineExtractor());
+        builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();
 
         Set<String> result = index.search("finished");
@@ -93,7 +93,7 @@ public class InMemoryInvertedIndexStandaloneTest {
         IndexBuilder builder = new InMemoryIndexBuilder();
         builder.setFileNameListExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
-        builder.setFileLineExtractor(new ReusableIteratorFileFileLineExtractor());
+        builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();
         index.buildIndex();
         Set<String> result = index.search("gapldspld");

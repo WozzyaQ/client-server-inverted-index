@@ -8,7 +8,6 @@ import java.util.*;
  * Extracts file names from specified directories
  */
 public class DirsFileNamesListExtractor implements ListExtractor<String> {
-
     private String[] paths;
     private final List<String> fileNames = new LinkedList<>();
 

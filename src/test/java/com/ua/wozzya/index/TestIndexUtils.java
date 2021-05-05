@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 
 public class TestIndexUtils {
 
-    public static final String CONTENT = "Process finished finished finished with with exit code 0";
+    public static final String SINGLE_LINE_CONTENT = "Process finished finished finished with with exit code 0";
     public static final String TEMP_FILE_NAME = "temp.txt";
     public static final String TEMP_PATH = "temp/";
     public static final DirsFileNamesListExtractor EXTRACTOR = DirsFileNamesListExtractor.createExtractor(TEMP_PATH);
@@ -26,7 +26,7 @@ public class TestIndexUtils {
 
                 FileOutputStream fos = new FileOutputStream(String.valueOf(filePath));
                 OutputStreamWriter osw = new OutputStreamWriter(fos);
-                osw.write(CONTENT);
+                osw.write(SINGLE_LINE_CONTENT);
                 osw.close();
                 fos.close();
             }

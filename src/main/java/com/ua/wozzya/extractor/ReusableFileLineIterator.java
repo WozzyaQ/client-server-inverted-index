@@ -5,18 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class ReusableIteratorFileFileLineExtractor implements FileLineExtractor {
+public class ReusableFileLineIterator implements FileLineIterator {
     private String pathToFile;
     private List<String> lines = new ArrayList<>();
     private int cursor = 0;
 
 
-    public ReusableIteratorFileFileLineExtractor() {
+    public ReusableFileLineIterator() {
         //Leave empty constructor to use reflection mechanism
         // in ConcurrentInMemoryIndex
     }
 
 
+    /**
+     * Sets path to a content file
+     * and extracts all lines from the file
+     * @param path relative or absolute path to file
+     */
     public void setPathToFile(String path) {
         this.pathToFile = path;
         lines.clear();
@@ -25,8 +30,11 @@ public class ReusableIteratorFileFileLineExtractor implements FileLineExtractor 
     }
 
     private void readAllLines() {
-        
         File file = new File(pathToFile);
+        if(!file.isFile()) {
+            throw new IllegalArgumentException("only works for files, not directories");
+        }
+
         try (FileInputStream fis = new FileInputStream(file);
              InputStreamReader reader = new InputStreamReader(fis);
              BufferedReader buffReader = new BufferedReader(reader)) {
@@ -52,10 +60,5 @@ public class ReusableIteratorFileFileLineExtractor implements FileLineExtractor 
         }
 
         return lines.get(cursor++);
-    }
-
-    @Override
-    public String extract() {
-        return next();
     }
 }

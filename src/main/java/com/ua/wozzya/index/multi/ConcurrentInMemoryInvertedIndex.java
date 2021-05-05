@@ -1,9 +1,9 @@
 package com.ua.wozzya.index.multi;
 
-import com.ua.wozzya.extractor.FileLineExtractor;
-import com.ua.wozzya.index.Pair;
+import com.ua.wozzya.extractor.FileLineIterator;
+import com.ua.wozzya.utils.Pair;
 import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.tokenizer.Tokenizer;
@@ -27,7 +27,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor,
                                               Tokenizer tokenizer,
-                                              ReusableIteratorFileFileLineExtractor fileReader,
+                                              ReusableFileLineIterator fileReader,
                                               int parallelAccessSections,
                                               int threadNum,
                                               boolean autoBuild) {
@@ -93,7 +93,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private void collectFromFileAndStore(String fileName) {
         try {
-            FileLineExtractor extractor = fileReader.getClass().getConstructor().newInstance();
+            FileLineIterator extractor = fileReader.getClass().getConstructor().newInstance();
             extractor.setPathToFile(fileName);
             while (extractor.hasNext()) {
                 String[] tokens = tokenizer.tokenize(extractor.next());

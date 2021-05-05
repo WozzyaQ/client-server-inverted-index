@@ -3,7 +3,7 @@ package com.ua.wozzya;
 import com.google.common.base.Stopwatch;
 import com.ua.wozzya.extractor.ListExtractor;
 import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
-import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
@@ -30,7 +30,7 @@ public class App
         Stopwatch stopwatch = Stopwatch.createStarted();
         // create index
         IndexBuilder builder = new InMemoryIndexBuilder();
-        builder.setFileLineExtractor(new ReusableIteratorFileFileLineExtractor());
+        builder.setFileLineExtractor(new ReusableFileLineIterator());
         builder.setTokenizer(tokenizer);
         builder.setFileNameListExtractor(extractor);
         builder.setAutoBuild(true);
