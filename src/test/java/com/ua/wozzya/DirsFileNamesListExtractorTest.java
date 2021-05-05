@@ -1,6 +1,6 @@
 package com.ua.wozzya;
 
-import com.ua.wozzya.extractor.DirsFileNamesExtractor;
+import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DirsFileNamesExtractorTest {
-
-    static final String[] PATHS = {"/test/neg", "/test/pos","/train/neg","/train/pos","/train/unsup"};
+public class DirsFileNamesListExtractorTest {
 
     static final String TEMP_PATH = "/tempo/";
     static final String TEMP_FILE = "temp.txt";
@@ -41,7 +39,7 @@ public class DirsFileNamesExtractorTest {
 
     public void deleteDir(File dir) {
         File[] files = dir.listFiles();
-        if(files != null) {
+        if (files != null) {
             for (final File file : files) {
                 deleteDir(file);
             }
@@ -52,7 +50,7 @@ public class DirsFileNamesExtractorTest {
 
     @Test
     public void shouldReturnExtractorInstance() {
-        DirsFileNamesExtractor e = DirsFileNamesExtractor.createExtractor("path1");
+        DirsFileNamesListExtractor e = DirsFileNamesListExtractor.createExtractor("path1");
         assertNotNull(e);
     }
 
@@ -60,7 +58,7 @@ public class DirsFileNamesExtractorTest {
     public void shouldExtractFileNamesFromPath() {
         String path = TEMP_PATH;
 
-        DirsFileNamesExtractor extractor = DirsFileNamesExtractor.createExtractor(path);
+        DirsFileNamesListExtractor extractor = DirsFileNamesListExtractor.createExtractor(path);
         List<String> fileNames = extractor.extract();
         assertEquals(TEMP_PATH + TEMP_FILE, fileNames.get(0));
     }
@@ -68,14 +66,14 @@ public class DirsFileNamesExtractorTest {
     @Test
     public void extractedSizeShouldBeEqualToActual() {
         int expected = 250;
-        DirsFileNamesExtractor extractor = DirsFileNamesExtractor.createExtractor("test/neg/");
+        DirsFileNamesListExtractor extractor = DirsFileNamesListExtractor.createExtractor("test/neg/");
         int actual = extractor.extract().size();
-        assertEquals(expected,actual);
+        assertEquals(expected, actual);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowIllegalStateExceptionWhenNoPathSupplied() {
-        DirsFileNamesExtractor.createExtractor(null);
+        DirsFileNamesListExtractor.createExtractor(null);
     }
 
 }

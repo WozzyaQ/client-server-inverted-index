@@ -1,9 +1,9 @@
 package com.ua.wozzya;
 
 import com.google.common.base.Stopwatch;
-import com.ua.wozzya.extractor.Extractor;
-import com.ua.wozzya.extractor.DirsFileNamesExtractor;
-import com.ua.wozzya.extractor.FileLineExtractor;
+import com.ua.wozzya.extractor.ListExtractor;
+import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
@@ -24,15 +24,15 @@ public class App
         String[] paths = {"test/", "train/"};
 
         // get extractor instance
-        DirsFileNamesExtractor extractor = DirsFileNamesExtractor.createExtractor(paths);
+        DirsFileNamesListExtractor extractor = DirsFileNamesListExtractor.createExtractor(paths);
         Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
 
         Stopwatch stopwatch = Stopwatch.createStarted();
         // create index
         IndexBuilder builder = new InMemoryIndexBuilder();
-        builder.setFileLineExtractor(new FileLineExtractor());
+        builder.setFileLineExtractor(new IteratorFileFileLineExtractor());
         builder.setTokenizer(tokenizer);
-        builder.setExtractor(extractor);
+        builder.setFileNameListExtractor(extractor);
         builder.setAutoBuild(true);
         Index index = builder.build();
 
@@ -49,7 +49,7 @@ public class App
 
     }
 
-    public static void extractorExtractorTest(Extractor<String> extractor) {
-        extractor.extract().forEach(System.out::println);
+    public static void extractorExtractorTest(ListExtractor<String> listExtractor) {
+        listExtractor.extract().forEach(System.out::println);
     }
 }

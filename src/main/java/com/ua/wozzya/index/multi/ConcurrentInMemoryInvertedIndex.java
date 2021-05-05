@@ -1,8 +1,9 @@
 package com.ua.wozzya.index.multi;
 
-import com.ua.wozzya.index.Pair;
-import com.ua.wozzya.extractor.Extractor;
 import com.ua.wozzya.extractor.FileLineExtractor;
+import com.ua.wozzya.index.Pair;
+import com.ua.wozzya.extractor.ListExtractor;
+import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.tokenizer.Tokenizer;
@@ -22,8 +23,8 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     private final int threadNum;
     private volatile boolean readyMarker = false;
 
-    protected ConcurrentInMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, FileLineExtractor fileReader, int parallelAccessSections, int threadNum, boolean autoBuild) {
-        super(extractor, tokenizer, fileReader);
+    protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor, Tokenizer tokenizer, IteratorFileFileLineExtractor fileReader, int parallelAccessSections, int threadNum, boolean autoBuild) {
+        super(listExtractor, tokenizer, fileReader);
 
         this.parallelAccessSections = parallelAccessSections;
         this.threadNum = threadNum;
@@ -42,7 +43,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     public void buildIndex() {
         initIndex();
 
-        List<String> fileNames = extractor.extract();
+        List<String> fileNames = listExtractor.extract();
         parallelizeCollecting(fileNames);
 
         readyMarker = true;

@@ -1,13 +1,13 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.Extractor;
-import com.ua.wozzya.extractor.FileLineExtractor;
+import com.ua.wozzya.extractor.ListExtractor;
+import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
 public interface IndexBuilder {
-    void setExtractor(Extractor<String> extractor);
+    void setFileNameListExtractor(ListExtractor<String> listExtractor);
     void setTokenizer(Tokenizer tokenizer);
     void setAutoBuild(boolean autoBuild);
-    void setFileLineExtractor(FileLineExtractor fileLineExtractor);
+    void setFileLineExtractor(IteratorFileFileLineExtractor iteratorFileLineExtractor);
     Index build();
 }

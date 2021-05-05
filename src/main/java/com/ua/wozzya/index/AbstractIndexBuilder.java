@@ -1,22 +1,22 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.Extractor;
-import com.ua.wozzya.extractor.FileLineExtractor;
+import com.ua.wozzya.extractor.ListExtractor;
+import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
 import java.util.Objects;
 
 public abstract class AbstractIndexBuilder implements IndexBuilder{
-    protected Extractor<String> extractor;
+    protected ListExtractor<String> listExtractor;
     protected Tokenizer tokenizer;
-    protected FileLineExtractor fileLineExtractor;
+    protected IteratorFileFileLineExtractor iteratorFileLineExtractor;
     protected boolean autoBuild;
 
     @Override
-    public void setExtractor(Extractor<String> extractor) {
-        Objects.requireNonNull(extractor);
+    public void setFileNameListExtractor(ListExtractor<String> listExtractor) {
+        Objects.requireNonNull(listExtractor);
 
-        this.extractor = extractor;
+        this.listExtractor = listExtractor;
     }
 
     @Override
@@ -32,9 +32,9 @@ public abstract class AbstractIndexBuilder implements IndexBuilder{
     }
 
     @Override
-    public void setFileLineExtractor(FileLineExtractor fileLineExtractor) {
-        Objects.requireNonNull(fileLineExtractor);
+    public void setFileLineExtractor(IteratorFileFileLineExtractor iteratorFileLineExtractor) {
+        Objects.requireNonNull(iteratorFileLineExtractor);
 
-        this.fileLineExtractor = fileLineExtractor;
+        this.iteratorFileLineExtractor = iteratorFileLineExtractor;
     }
 }

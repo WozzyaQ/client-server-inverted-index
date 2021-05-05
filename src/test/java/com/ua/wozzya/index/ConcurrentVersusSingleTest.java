@@ -1,8 +1,8 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.Extractor;
-import com.ua.wozzya.extractor.DirsFileNamesExtractor;
-import com.ua.wozzya.extractor.FileLineExtractor;
+import com.ua.wozzya.extractor.ListExtractor;
+import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
 import com.ua.wozzya.index.multi.ConcurrentInMemoryIndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
@@ -23,10 +23,10 @@ public class ConcurrentVersusSingleTest {
     Index single;
     Index multi;
 
-    FileLineExtractor lineExtractor = new FileLineExtractor();
+    IteratorFileFileLineExtractor lineExtractor = new IteratorFileFileLineExtractor();
     Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
-    String[] directories = {"test/","train/"};
-    Extractor<String> fileNameExtractor = DirsFileNamesExtractor.createExtractor(directories);
+    String[] directories = {"test/", "train/"};
+    ListExtractor<String> fileNameListExtractor = DirsFileNamesListExtractor.createExtractor(directories);
 
     @Before
     public void setUp() {
@@ -39,7 +39,7 @@ public class ConcurrentVersusSingleTest {
         builder.setFileLineExtractor(lineExtractor);
         builder.setAutoBuild(true);
         builder.setTokenizer(tokenizer);
-        builder.setExtractor(fileNameExtractor);
+        builder.setFileNameListExtractor(fileNameListExtractor);
         return builder.build();
     }
 
@@ -48,7 +48,7 @@ public class ConcurrentVersusSingleTest {
         builder.setFileLineExtractor(lineExtractor);
         builder.setAutoBuild(true);
         builder.setTokenizer(tokenizer);
-        builder.setExtractor(fileNameExtractor);
+        builder.setFileNameListExtractor(fileNameListExtractor);
         return builder.build();
     }
 
@@ -89,7 +89,7 @@ public class ConcurrentVersusSingleTest {
 
         int singleWins = 0;
         int multiWins = 0;
-        for(int i = 0; i < runs; ++i) {
+        for (int i = 0; i < runs; ++i) {
             long startSingle = System.currentTimeMillis();
             buildSingle();
             long endSingle = System.currentTimeMillis();
@@ -102,7 +102,7 @@ public class ConcurrentVersusSingleTest {
 
             System.out.println("single time -->" + singleTime);
             System.out.println("concurrent time -->" + multiTime);
-            if(multiTime < singleTime) {
+            if (multiTime < singleTime) {
                 multiWins++;
             } else {
                 singleWins++;
