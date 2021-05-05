@@ -21,17 +21,17 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private Map<String, Pair<AtomicLong, Set<String>>> index;
 
-    private final int threadNum;
+    private final int suppliedThreadAmount;
     private volatile boolean readyMarker = false;
 
     protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor,
                                               Tokenizer tokenizer,
-                                              ReusableFileLineIterator fileReader,
-                                              int threadNum,
+                                              ReusableFileLineIterator lineIterator,
+                                              int suppliedThreadAmount,
                                               boolean autoBuild) {
-        super(listExtractor, tokenizer, fileReader);
+        super(listExtractor, tokenizer, lineIterator);
 
-        this.threadNum = threadNum;
+        this.suppliedThreadAmount = suppliedThreadAmount;
 
         if (autoBuild) {
             buildIndex();
@@ -46,34 +46,42 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     @Override
     public void buildIndex() {
         initIndex();
-        List<String> fileNames = listExtractor.extract();
-        parallelizeCollecting(fileNames);
+        parallelizeCollecting();
         readyMarker = true;
     }
 
-    private void parallelizeCollecting(List<String> fileNames) {
+    private void parallelizeCollecting() {
+        List<String> fileNames = listExtractor.extract();
+
         int filesAmount = fileNames.size();
-        int threadAmount = Math.min(filesAmount, threadNum);
+        int actualThreadAmount = Math.min(filesAmount, suppliedThreadAmount);
 
-        int splitLength = filesAmount / threadAmount;
-        int reminder = filesAmount % threadAmount;
+        //occurs if no files in supplied directory
+        if (actualThreadAmount == 0) {
+            return;
+        }
 
+        ExecutorService ex = Executors.newFixedThreadPool(actualThreadAmount);
+        var latch = new CountDownLatch(actualThreadAmount);
 
-        ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
-        var latch = new CountDownLatch(threadAmount);
+        int splitLength = filesAmount / actualThreadAmount;
+        int reminder = filesAmount % actualThreadAmount;
+        for (var i = 0; i < actualThreadAmount; ++i) {
 
-        for (var i = 0; i < threadAmount; ++i) {
             int startIndex = i * splitLength;
             int endIndex = (i + 1) * splitLength;
-            if (i == threadAmount - 1) {
+            if (i == actualThreadAmount - 1) {
                 endIndex += reminder;
             }
+            //need to be effectively final to be captured with
+            //the following lambda
             int finalEndIndex = endIndex;
 
             ex.submit(() -> {
                 List<String> subFileNameList = fileNames.subList(startIndex, finalEndIndex);
+                FileLineIterator fileLineIterator = reflectFLI(lineIterator.getClass());
                 for (String fileName : subFileNameList) {
-                    collectFromFileAndStore(fileName);
+                    collectFromFileAndStore(fileName, fileLineIterator);
                 }
                 latch.countDown();
             });
@@ -87,18 +95,31 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
         }
     }
 
-    private void collectFromFileAndStore(String fileName) {
-        try {
-            //create instance of supplied FileLineIterator to cause no troubles
-            //in concurrent line extraction
-            FileLineIterator extractor = fileReader.getClass().getConstructor().newInstance();
-            extractor.setPathToFile(fileName);
-            String[] tokens = tokenizer.tokenize(extractor.extract());
-            store(tokens, fileName);
+    /**
+     * Create instance of {@link FileLineIterator} using reflection
+     * mechanism to supply in {@link ConcurrentInMemoryInvertedIndex#collectFromFileAndStore} function.
+     * Thus, each thread uses own copy of supplied {@link FileLineIterator}.
+     *
+     * @param fliClass class object of {@link FileLineIterator} and its child
+     * @return instance of {@link FileLineIterator}
+     * null if reflection error occurs, causing NPE
+     */
+    private FileLineIterator reflectFLI(Class<? extends FileLineIterator> fliClass) {
+        FileLineIterator result = null;
 
+        try {
+            result = fliClass.getConstructor().newInstance();
         } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
         }
+        //return null reference and catch NPE if something unexpected happens
+        return result;
+    }
+
+    private void collectFromFileAndStore(String fileName, FileLineIterator lineExtractor) {
+        lineExtractor.setPathToFile(fileName);
+        String[] tokens = tokenizer.tokenize(lineExtractor.extract());
+        store(tokens, fileName);
     }
 
     private void store(String[] tokens, String fileName) {
@@ -122,7 +143,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     @Override
     public Set<String> search(String key) {
-        buildCheck();
+        indexReadinessCheck();
         return index.getOrDefault(key, EMPTY_PAIR)
                 .getRight()
                 .stream()
@@ -133,7 +154,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     @Override
     public long getFrequency(String key) {
-        buildCheck();
+        indexReadinessCheck();
         return index.getOrDefault(key, EMPTY_PAIR)
                 .getLeft()
                 .get();

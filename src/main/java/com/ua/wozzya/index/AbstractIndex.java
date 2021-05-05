@@ -7,7 +7,7 @@ import com.ua.wozzya.tokenizer.Tokenizer;
 public abstract class AbstractIndex implements Index {
     protected final ListExtractor<String> listExtractor;
     protected final Tokenizer tokenizer;
-    protected final FileLineIterator fileReader;
+    protected final FileLineIterator lineIterator;
 
     /**
      * @param listExtractor    implementation of {@link ListExtractor <String>}
@@ -17,7 +17,7 @@ public abstract class AbstractIndex implements Index {
     protected AbstractIndex(ListExtractor<String> listExtractor, Tokenizer tokenizer, FileLineIterator fileLineIterator) {
         this.listExtractor = listExtractor;
         this.tokenizer = tokenizer;
-        this.fileReader = fileLineIterator;
+        this.lineIterator = fileLineIterator;
     }
 
     /**
@@ -28,7 +28,7 @@ public abstract class AbstractIndex implements Index {
     /**
      * Checks if index was built
      */
-    protected void buildCheck() {
+    protected void indexReadinessCheck() {
         if (!isReady()) {
             throw new IllegalStateException("index should be built first");
         }

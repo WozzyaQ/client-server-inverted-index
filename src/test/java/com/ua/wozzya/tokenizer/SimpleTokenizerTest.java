@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class SimpleTokenizerTest {
 
-    String[] splittedText = {"this","is","my","text","that","will","be","tokenized","text"};
+    String[] splittedText = {"this","is","my","text","that","will","be","tokenized","text", "we'll"};
     String joinedText;
 
     @Before

@@ -58,8 +58,8 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     }
 
     private void collectFromFileAndStore(String fileName) {
-        fileReader.setPathToFile(fileName);
-        String[] tokens = tokenizer.tokenize(fileReader.extract());
+        lineIterator.setPathToFile(fileName);
+        String[] tokens = tokenizer.tokenize(lineIterator.extract());
         store(tokens,fileName);
     }
 
@@ -76,13 +76,13 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     @Override
     public Set<String> search(String key) {
-        buildCheck();
+        indexReadinessCheck();
         return getPair(key).getRight();
     }
 
     @Override
     public long getFrequency(String key) {
-        buildCheck();
+        indexReadinessCheck();
         return getPair(key).getLeft();
     }
 

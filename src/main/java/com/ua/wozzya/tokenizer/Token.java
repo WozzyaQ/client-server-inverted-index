@@ -11,18 +11,21 @@ import java.util.regex.Pattern;
 public enum Token {
     /**
      * Default split token
+     * Matches single character from class \w
      */
     DEFAULT("\\w+?", 0),
 
     /**
-     * Regex to match the word per se
-     */
-    WORD("\\b\\w+?\\b", 0),
-
-    /**
      * Lookahead regex to match only unique words
      */
-    UNIQUE_WORD("(\\b'??(\\w+?\\b))(?![\\s\\S]+?\\1\\b)", 2);
+    UNIQUE_WORD("(\\b'??(\\w+?\\b))(?![\\s\\S]+?\\1\\b)", 2),
+
+    /**
+     *
+     * Regex to match the word per se,
+     * including words with " ' "
+     */
+    WORD("\\b\\w+'*\\w+?\\b", 0);
 
     final Pattern pattern;
     final int groupIndex;

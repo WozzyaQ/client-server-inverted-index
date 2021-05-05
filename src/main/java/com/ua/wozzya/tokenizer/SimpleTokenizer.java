@@ -8,6 +8,7 @@ import java.util.Objects;
 /**
  * Simple tokenizer implementation
  */
+//TODO factory method for tokenizer
 public class SimpleTokenizer implements Tokenizer {
     private final Token token;
 
