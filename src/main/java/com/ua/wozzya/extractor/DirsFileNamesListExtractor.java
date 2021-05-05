@@ -22,6 +22,7 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
 
     /**
      * Factory method to build extractor
+     *
      * @param paths directory to be parsed
      * @return {@link DirsFileNamesListExtractor} instance
      */
@@ -33,6 +34,7 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
     /**
      * Extracts all the file names from the specified directory
      * and it's subdirectories
+     *
      * @return list of file names
      */
     @Override
@@ -49,20 +51,21 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
         }
     }
 
-    public void extractFromPath(String from, File dir) {
+    public void extractFromPath(String basePath, File dir) {
         File[] files = dir.listFiles();
         //if contains file
         if (files != null) {
             for (File file : files) {
                 //recursive search if directory
+                String fileName = file.getName();
                 if (file.isDirectory()) {
-                    extractFromPath(from + file.getName() + "/", file);
-                }
-                else {
-                    fileNames.add(from + file.getName());
+                    extractFromPath(basePath + fileName + "/", file);
+                } else {
+                    //TODO Consider filtering by name
+                    fileNames.add(basePath + fileName);
+                    System.out.println(fileName);
                 }
             }
         }
     }
-
 }

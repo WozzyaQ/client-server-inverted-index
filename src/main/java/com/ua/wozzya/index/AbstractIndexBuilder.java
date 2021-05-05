@@ -6,7 +6,11 @@ import com.ua.wozzya.tokenizer.Tokenizer;
 
 import java.util.Objects;
 
-public abstract class AbstractIndexBuilder implements IndexBuilder{
+/**
+ * Abstract implementation of {@link IndexBuilder} interface
+ * Encapsulates common setter logic
+ */
+public abstract class AbstractIndexBuilder implements IndexBuilder {
     protected ListExtractor<String> listExtractor;
     protected Tokenizer tokenizer;
     protected ReusableFileLineIterator iteratorFileLineExtractor;

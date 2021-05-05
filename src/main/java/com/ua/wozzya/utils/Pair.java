@@ -1,6 +1,12 @@
 package com.ua.wozzya.utils;
 
-public class Pair<L,R>{
+/**
+ * Simple pair container
+ *
+ * @param <L> "left" class type
+ * @param <R> "right" class type
+ */
+public class Pair<L, R> {
 
     L left;
     R right;

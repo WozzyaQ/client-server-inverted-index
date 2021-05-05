@@ -1,7 +1,6 @@
 package com.ua.wozzya.index;
 
 
-
 import java.util.Set;
 
 /**
