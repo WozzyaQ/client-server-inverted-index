@@ -4,11 +4,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.*;
 
 public class SimpleTokenizerTest {
 
-    String[] splittedText = {"this","is","my","text","that","will","be","tokenized"};
+    String[] splittedText = {"this","is","my","text","that","will","be","tokenized","text"};
     String joinedText;
 
     @Before
@@ -22,10 +25,20 @@ public class SimpleTokenizerTest {
     }
 
     @Test
-    public void shouldTokenize() {
+    public void shouldTokenizeWithWordToken() {
         Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
         String[] expectedTokens = splittedText;
         String[] actualTokens = tokenizer.tokenize(joinedText);
+
+        assertArrayEquals(expectedTokens, actualTokens);
+    }
+
+    @Test
+    public void shouldTokenizeWithWordTokenMultiLine() {
+        Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
+        String[] expectedTokens = {"here", "we", "go", "again"};
+        String content = Arrays.stream(expectedTokens).collect(Collectors.joining(System.lineSeparator()));
+        String[] actualTokens = tokenizer.tokenize(content);
 
         assertArrayEquals(expectedTokens, actualTokens);
     }
