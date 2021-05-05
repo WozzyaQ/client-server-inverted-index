@@ -11,6 +11,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private final int parallelAccessSections;
     private final int threadNum;
+    private volatile boolean readyMarker = false;
 
     protected ConcurrentInMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, int parallelAccessSections, int threadNum, boolean autoBuild) {
         super(extractor, tokenizer);
@@ -18,7 +19,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
         this.parallelAccessSections = parallelAccessSections;
         this.threadNum = threadNum;
 
-        if(autoBuild) {
+        if (autoBuild) {
             buildIndex();
         }
     }
@@ -31,21 +32,29 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     @Override
     public void buildIndex() {
         initIndex();
+
+        postBuildSectionSplit();
+        readyMarker = true;
     }
 
     private void postBuildSectionSplit() {
 
     }
 
+
     @Override
     public List<String> search(String key) {
         return null;
     }
 
+    @Override
+    public long getFrequency(String key) {
+        return 0;
+    }
 
 
     @Override
     public boolean isReady() {
-        return false;
+        return readyMarker;
     }
 }

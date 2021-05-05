@@ -38,13 +38,12 @@ public class App
         System.out.println("Build time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
 
         // get list of file names by word
-        List<String> fileNames = index.search("movies");
+        List<String> fileNames = index.search("the");
+        System.out.println(index.getFrequency("the"));
         System.out.println(fileNames.size());
 
         // print all
-//        fileNames.forEach(System.out::println);
-        System.out.println(Runtime.getRuntime().availableProcessors());
-
+        fileNames.forEach(System.out::println);
     }
 
     public static void extractorExtractorTest(Extractor<String> extractor) {

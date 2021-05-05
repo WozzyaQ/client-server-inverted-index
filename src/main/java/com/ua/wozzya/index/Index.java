@@ -12,6 +12,8 @@ public interface Index {
      */
     List<String> search(String key);
 
+    long getFrequency(String key);
+
     void buildIndex();
 
     boolean isReady();

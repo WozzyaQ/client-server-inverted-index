@@ -1,5 +1,6 @@
 package com.ua.wozzya.index.single;
 
+import com.ua.wozzya.Pair;
 import com.ua.wozzya.extractor.Extractor;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
@@ -16,8 +17,11 @@ import java.util.stream.Collectors;
  */
 public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
-    private boolean isReady;
-    private Map<String, Set<String>> index;
+    private boolean readyMarker;
+    private static Pair<Long,Set<String>> EMPTY_PAIR = new Pair<>(0L, Collections.emptySet());
+    private Map<String, Pair<Long, Set<String>>> index;
+
+
 
     protected InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
         super(extractor, tokenizer);
@@ -34,7 +38,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     @Override
     public void buildIndex() {
-        if(isReady) return;
+        if(readyMarker) return;
 
         initIndex();
 
@@ -43,12 +47,12 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         for (String fileName : fileNames) {
             collectFromFileAndStore(new File(fileName));
         }
-        isReady = true;
+        readyMarker = true;
     }
 
     @Override
     public boolean isReady() {
-        return isReady;
+        return readyMarker;
     }
 
     private void collectFromFileAndStore(File file) {
@@ -69,23 +73,42 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     private void store(String[] tokens, String fileName) {
         for(String token : tokens) {
-            Set<String> set = index.getOrDefault(token, new HashSet<>());
-            set.add(fileName);
-            index.put(token, set);
+            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
+
+            pair.setLeft(pair.getLeft() + 1);
+            Set<String> curSet = pair.getRight();
+            curSet.add(fileName);
+            index.put(token, pair);
         }
     }
 
     @Override
     public List<String> search(String key) {
-        if(!isReady) {
+        if(!readyMarker) {
             throw new IllegalStateException("index should be built before calling search");
         }
 
         Objects.requireNonNull(key);
         key = key.toLowerCase();
-        return index.getOrDefault(key, Collections.emptySet())
+
+        var pair = index.getOrDefault(key, EMPTY_PAIR);
+
+        return pair.getRight()
                 .stream()
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public long getFrequency(String key) {
+        if(!readyMarker) {
+            throw new IllegalStateException("index should be built before calling search");
+        }
+
+        Objects.requireNonNull(key);
+        key = key.toLowerCase();
+
+        var pair = index.getOrDefault(key, EMPTY_PAIR);
+        return pair.getLeft();
     }
 }

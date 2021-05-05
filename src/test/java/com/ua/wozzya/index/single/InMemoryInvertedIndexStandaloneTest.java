@@ -18,18 +18,19 @@ import static org.junit.Assert.*;
 
 public class InMemoryInvertedIndexStandaloneTest {
 
-    static final String CONTENT = "Process finished with exit code 0";
+    static final String CONTENT = "Process finished finished finished with with exit code 0";
     static final String TEMP_FILE_NAME = "temp.txt";
     static final String TEMP_PATH = "temp/";
     static final FileNameExtractor EXTRACTOR = FileNameExtractor.createExtractor(TEMP_PATH);
 
-    @BeforeClass
-    public static void setUp() throws IOException {
+    @Before
+    public  void setUp() throws IOException {
 
         Path path = Paths.get(TEMP_PATH);
         Path filePath = Paths.get(TEMP_PATH + TEMP_FILE_NAME);
 
         if(!Files.exists(path)) {
+            System.out.println("inserting");
             Files.createDirectory(path);
             Files.createFile(filePath);
 
@@ -41,8 +42,8 @@ public class InMemoryInvertedIndexStandaloneTest {
         }
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @After
+    public  void tearDown() throws IOException {
         File dir = new File(TEMP_PATH);
         File[] files = dir.listFiles();
 
