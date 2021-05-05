@@ -21,19 +21,16 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private Map<String, Pair<AtomicLong, Set<String>>> index;
 
-    private final int parallelAccessSections;
     private final int threadNum;
     private volatile boolean readyMarker = false;
 
     protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor,
                                               Tokenizer tokenizer,
                                               ReusableFileLineIterator fileReader,
-                                              int parallelAccessSections,
                                               int threadNum,
                                               boolean autoBuild) {
         super(listExtractor, tokenizer, fileReader);
 
-        this.parallelAccessSections = parallelAccessSections;
         this.threadNum = threadNum;
 
         if (autoBuild) {
@@ -49,10 +46,8 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     @Override
     public void buildIndex() {
         initIndex();
-
         List<String> fileNames = listExtractor.extract();
         parallelizeCollecting(fileNames);
-
         readyMarker = true;
     }
 
@@ -65,6 +60,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
 
         ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
+        CountDownLatch latch = new CountDownLatch(threadAmount);
 
         for (int i = 0; i < threadAmount; ++i) {
             int startIndex = i * splitLength;
@@ -79,13 +75,12 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
                 for (String fileName : subFileNameList) {
                     collectFromFileAndStore(fileName);
                 }
+                latch.countDown();
             });
         }
-
         ex.shutdown();
-
         try {
-            ex.awaitTermination(10, TimeUnit.SECONDS);
+            latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -93,12 +88,17 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private void collectFromFileAndStore(String fileName) {
         try {
+            //create instance of supplied FileLineIterator to cause no troubles
+            //in concurrent line extraction
             FileLineIterator extractor = fileReader.getClass().getConstructor().newInstance();
             extractor.setPathToFile(fileName);
+
             while (extractor.hasNext()) {
                 String[] tokens = tokenizer.tokenize(extractor.next());
                 store(tokens, fileName);
             }
+
+
         } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -106,7 +106,8 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private void store(String[] tokens, String fileName) {
         for (String token : tokens) {
-            Pair<AtomicLong, Set<String>> pair = index.getOrDefault(token, new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet()));
+            Pair<AtomicLong, Set<String>> pair = index.getOrDefault(token,
+                    new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet()));
 
             AtomicLong oldAtomic = pair.getLeft();
             long oldValue;
@@ -129,17 +130,17 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
                 .getRight()
                 .stream()
                 .sorted()
+                // TODO optimize sorting
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
     public long getFrequency(String key) {
-        buildIndex();
+        buildCheck();
         return index.getOrDefault(key, EMPTY_PAIR)
                 .getLeft()
                 .get();
     }
-
 
     @Override
     public boolean isReady() {
