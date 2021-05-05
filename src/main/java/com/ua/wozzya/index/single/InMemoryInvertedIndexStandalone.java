@@ -19,7 +19,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     private boolean isReady;
     private Map<String, Set<String>> index;
 
-    public InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
+    protected InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
         super(extractor, tokenizer);
 
         if(autobuild) {

@@ -5,7 +5,6 @@ import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
 import com.ua.wozzya.tokenizer.Token;
-import com.ua.wozzya.tokenizer.Tokenizer;
 import org.junit.*;
 
 import java.io.*;

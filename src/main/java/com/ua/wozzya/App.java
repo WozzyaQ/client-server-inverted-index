@@ -3,6 +3,9 @@ package com.ua.wozzya;
 import com.google.common.base.Stopwatch;
 import com.ua.wozzya.extractor.Extractor;
 import com.ua.wozzya.extractor.FileNameExtractor;
+import com.ua.wozzya.index.Index;
+import com.ua.wozzya.index.IndexBuilder;
+import com.ua.wozzya.index.single.InMemoryIndexBuilder;
 import com.ua.wozzya.index.single.InMemoryInvertedIndexStandalone;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
 import com.ua.wozzya.tokenizer.Token;
@@ -17,7 +20,7 @@ public class App
     /**
      * Usage example
      */
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args )  {
         //root dirs to files
         String[] paths = {"test/", "train/"};
 
@@ -27,7 +30,10 @@ public class App
 
         Stopwatch stopwatch = Stopwatch.createStarted();
         // create index
-        InMemoryInvertedIndexStandalone index = new InMemoryInvertedIndexStandalone(extractor, tokenizer, true);
+        IndexBuilder builder = new InMemoryIndexBuilder();
+        builder.setTokenizer(tokenizer).setExtractor(extractor).setAutoBuild(true);
+        Index index = builder.build();
+
         stopwatch.stop();
         System.out.println("Build time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS));
 

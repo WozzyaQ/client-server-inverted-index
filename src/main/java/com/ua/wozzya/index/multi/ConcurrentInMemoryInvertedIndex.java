@@ -12,7 +12,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     private final int parallelAccessSections;
     private final int threadNum;
 
-    public ConcurrentInMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, int parallelAccessSections, int threadNum, boolean autoBuild) {
+    protected ConcurrentInMemoryInvertedIndex(Extractor<String> extractor, Tokenizer tokenizer, int parallelAccessSections, int threadNum, boolean autoBuild) {
         super(extractor, tokenizer);
 
         this.parallelAccessSections = parallelAccessSections;

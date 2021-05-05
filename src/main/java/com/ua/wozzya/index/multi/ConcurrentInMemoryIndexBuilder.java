@@ -27,6 +27,7 @@ public class ConcurrentInMemoryIndexBuilder extends AbstractIndexBuilder impleme
         if(threadNum <= 0) {
             throw new IllegalArgumentException("amount of processing threads should be >= 1");
         }
+
         this.threadNum = threadNum;
         return this;
     }
