@@ -1,7 +1,7 @@
 package com.ua.wozzya.index;
 
 import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.Objects;
 public abstract class AbstractIndexBuilder implements IndexBuilder{
     protected ListExtractor<String> listExtractor;
     protected Tokenizer tokenizer;
-    protected IteratorFileFileLineExtractor iteratorFileLineExtractor;
+    protected ReusableIteratorFileFileLineExtractor iteratorFileLineExtractor;
     protected boolean autoBuild;
 
     @Override
@@ -32,7 +32,7 @@ public abstract class AbstractIndexBuilder implements IndexBuilder{
     }
 
     @Override
-    public void setFileLineExtractor(IteratorFileFileLineExtractor iteratorFileLineExtractor) {
+    public void setFileLineExtractor(ReusableIteratorFileFileLineExtractor iteratorFileLineExtractor) {
         Objects.requireNonNull(iteratorFileLineExtractor);
 
         this.iteratorFileLineExtractor = iteratorFileLineExtractor;

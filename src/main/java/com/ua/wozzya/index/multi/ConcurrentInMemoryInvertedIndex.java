@@ -3,7 +3,7 @@ package com.ua.wozzya.index.multi;
 import com.ua.wozzya.extractor.FileLineExtractor;
 import com.ua.wozzya.index.Pair;
 import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.tokenizer.Tokenizer;
@@ -16,14 +16,21 @@ import java.util.stream.Collectors;
 
 public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements Index {
 
-    private static final Pair<AtomicLong, Set<String>> EMPTY_PAIR = new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet());
+    private static final Pair<AtomicLong, Set<String>> EMPTY_PAIR =
+            new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet());
+
     private Map<String, Pair<AtomicLong, Set<String>>> index;
 
     private final int parallelAccessSections;
     private final int threadNum;
     private volatile boolean readyMarker = false;
 
-    protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor, Tokenizer tokenizer, IteratorFileFileLineExtractor fileReader, int parallelAccessSections, int threadNum, boolean autoBuild) {
+    protected ConcurrentInMemoryInvertedIndex(ListExtractor<String> listExtractor,
+                                              Tokenizer tokenizer,
+                                              ReusableIteratorFileFileLineExtractor fileReader,
+                                              int parallelAccessSections,
+                                              int threadNum,
+                                              boolean autoBuild) {
         super(listExtractor, tokenizer, fileReader);
 
         this.parallelAccessSections = parallelAccessSections;

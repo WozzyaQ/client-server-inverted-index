@@ -2,17 +2,20 @@ package com.ua.wozzya.extractor;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class IteratorFileFileLineExtractor implements FileLineExtractor {
+public class ReusableIteratorFileFileLineExtractor implements FileLineExtractor {
     private String pathToFile;
     private List<String> lines = new ArrayList<>();
     private int cursor = 0;
 
-    public IteratorFileFileLineExtractor() {
+
+    public ReusableIteratorFileFileLineExtractor() {
+        //Leave empty constructor to use reflection mechanism
+        // in ConcurrentInMemoryIndex
     }
+
 
     public void setPathToFile(String path) {
         this.pathToFile = path;
@@ -22,6 +25,7 @@ public class IteratorFileFileLineExtractor implements FileLineExtractor {
     }
 
     private void readAllLines() {
+        
         File file = new File(pathToFile);
         try (FileInputStream fis = new FileInputStream(file);
              InputStreamReader reader = new InputStreamReader(fis);

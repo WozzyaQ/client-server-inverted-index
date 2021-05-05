@@ -2,7 +2,7 @@ package com.ua.wozzya.index;
 
 import com.ua.wozzya.extractor.FileLineExtractor;
 import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.IteratorFileFileLineExtractor;
+import com.ua.wozzya.extractor.ReusableIteratorFileFileLineExtractor;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
 public abstract class AbstractIndex implements Index {
@@ -15,7 +15,7 @@ public abstract class AbstractIndex implements Index {
      * @param tokenizer instance of {@link Tokenizer}
      * @param fileReader
      */
-    protected AbstractIndex(ListExtractor<String> listExtractor, Tokenizer tokenizer, IteratorFileFileLineExtractor fileReader) {
+    protected AbstractIndex(ListExtractor<String> listExtractor, Tokenizer tokenizer, ReusableIteratorFileFileLineExtractor fileReader) {
         this.listExtractor = listExtractor;
         this.tokenizer = tokenizer;
         this.fileReader = fileReader;
