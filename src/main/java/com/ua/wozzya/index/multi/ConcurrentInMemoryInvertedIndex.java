@@ -60,9 +60,9 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
 
         ExecutorService ex = Executors.newFixedThreadPool(threadAmount);
-        CountDownLatch latch = new CountDownLatch(threadAmount);
+        var latch = new CountDownLatch(threadAmount);
 
-        for (int i = 0; i < threadAmount; ++i) {
+        for (var i = 0; i < threadAmount; ++i) {
             int startIndex = i * splitLength;
             int endIndex = (i + 1) * splitLength;
             if (i == threadAmount - 1) {
@@ -83,6 +83,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 

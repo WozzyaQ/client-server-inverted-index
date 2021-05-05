@@ -63,7 +63,6 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
                 } else {
                     //TODO Consider filtering by name
                     fileNames.add(basePath + fileName);
-                    System.out.println(fileName);
                 }
             }
         }

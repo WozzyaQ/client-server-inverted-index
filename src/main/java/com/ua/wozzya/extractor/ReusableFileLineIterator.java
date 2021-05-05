@@ -39,14 +39,14 @@ public class ReusableFileLineIterator implements FileLineIterator {
     }
 
     private void readAllLines() {
-        File file = new File(pathToFile);
+        var file = new File(pathToFile);
         if(!file.isFile()) {
             throw new IllegalArgumentException("only works for files, not directories");
         }
 
-        try (FileInputStream fis = new FileInputStream(file);
-             InputStreamReader reader = new InputStreamReader(fis);
-             BufferedReader buffReader = new BufferedReader(reader)) {
+        try (var fis = new FileInputStream(file);
+             var reader = new InputStreamReader(fis);
+             var buffReader = new BufferedReader(reader)) {
 
             String line;
             while ((line = buffReader.readLine()) != null) {
@@ -73,7 +73,7 @@ public class ReusableFileLineIterator implements FileLineIterator {
 
     @Override
     public String extract() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         while (hasNext()){
             sb.append(next()).append(System.lineSeparator());
         }
