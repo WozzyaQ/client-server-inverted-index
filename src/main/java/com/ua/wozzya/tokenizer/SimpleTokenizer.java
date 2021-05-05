@@ -17,7 +17,7 @@ public class SimpleTokenizer implements Tokenizer {
     }
 
     public SimpleTokenizer(Token token) {
-        Objects.requireNonNull(token);
+        Objects.requireNonNull(token, "token should not be null");
         this.token = token;
     }
 

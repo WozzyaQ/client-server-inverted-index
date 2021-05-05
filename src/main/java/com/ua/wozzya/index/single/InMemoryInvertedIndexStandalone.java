@@ -87,7 +87,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     }
 
     private Pair<Long, Set<String>> getPair(String key) {
-        Objects.requireNonNull(key);
+        Objects.requireNonNull(key, "key shouldn't be null");
         key = key.toLowerCase();
 
         return index.getOrDefault(key, EMPTY_PAIR);

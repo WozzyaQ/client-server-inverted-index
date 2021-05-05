@@ -27,7 +27,7 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
      * @return {@link DirsFileNamesListExtractor} instance
      */
     public static DirsFileNamesListExtractor createExtractor(String... paths) {
-        Objects.requireNonNull(paths);
+        Objects.requireNonNull(paths, "paths should not be null");
         return new DirsFileNamesListExtractor(paths);
     }
 

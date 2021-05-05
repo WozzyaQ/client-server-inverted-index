@@ -19,15 +19,13 @@ public abstract class AbstractIndexBuilder implements IndexBuilder {
 
     @Override
     public void setFileNameListExtractor(ListExtractor<String> listExtractor) {
-        Objects.requireNonNull(listExtractor);
-
+        Objects.requireNonNull(listExtractor, "line extractor should not be null");
         this.listExtractor = listExtractor;
     }
 
     @Override
     public void setTokenizer(Tokenizer tokenizer) {
-        Objects.requireNonNull(tokenizer);
-
+        Objects.requireNonNull(tokenizer, "tokenizer should not be null");
         this.tokenizer = tokenizer;
     }
 
@@ -38,8 +36,7 @@ public abstract class AbstractIndexBuilder implements IndexBuilder {
 
     @Override
     public void setFileLineExtractor(ReusableFileLineIterator iteratorFileLineExtractor) {
-        Objects.requireNonNull(iteratorFileLineExtractor);
-
+        Objects.requireNonNull(iteratorFileLineExtractor, "reusableFileLineIterator should not be null");
         this.iteratorFileLineExtractor = iteratorFileLineExtractor;
     }
 }

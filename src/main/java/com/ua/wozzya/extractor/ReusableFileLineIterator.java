@@ -8,9 +8,9 @@ import java.util.NoSuchElementException;
 /**
  * Implements iterator-like behaviour associated with iterating
  * through the lines in the file, specified in {@link ReusableFileLineIterator#setPathToFile}.
- *
+ * <p>
  * Can be used multiple times if new {@link ReusableFileLineIterator#pathToFile} was supplied
- *
+ * <p>
  * Automatically extracts all the lines from {@link ReusableFileLineIterator#pathToFile}
  * on {@link ReusableFileLineIterator#setPathToFile(String)} method invocation.
  */
@@ -29,6 +29,7 @@ public class ReusableFileLineIterator implements FileLineIterator {
     /**
      * Sets path to a content file
      * and extracts all lines from the file
+     *
      * @param path relative or absolute path to file
      */
     public void setPathToFile(String path) {
@@ -40,7 +41,7 @@ public class ReusableFileLineIterator implements FileLineIterator {
 
     private void readAllLines() {
         var file = new File(pathToFile);
-        if(!file.isFile()) {
+        if (!file.isFile()) {
             throw new IllegalArgumentException("only works for files, not directories");
         }
 
@@ -67,14 +68,13 @@ public class ReusableFileLineIterator implements FileLineIterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         return lines.get(cursor++);
     }
 
     @Override
     public String extract() {
         var sb = new StringBuilder();
-        while (hasNext()){
+        while (hasNext()) {
             sb.append(next()).append(System.lineSeparator());
         }
         return sb.toString();

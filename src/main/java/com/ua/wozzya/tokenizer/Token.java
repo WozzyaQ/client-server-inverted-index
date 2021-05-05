@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
  *
  * @author V.Chaykovsky
  */
+// TODO refactor enum to class Hierarchy allowing functionality expansion
 public enum Token {
     /**
      * Default split token
