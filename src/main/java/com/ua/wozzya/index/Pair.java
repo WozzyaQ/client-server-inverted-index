@@ -1,4 +1,4 @@
-package com.ua.wozzya;
+package com.ua.wozzya.index;
 
 public class Pair<L,R>{
 

@@ -7,12 +7,12 @@ import java.util.*;
  * Simple implementation of {@link Extractor} interface
  * Extracts file names from specified directories
  */
-public class FileNameExtractor implements Extractor<String> {
+public class DirsFileNamesExtractor implements Extractor<String> {
 
     private String[] paths;
     private final List<String> fileNames = new LinkedList<>();
 
-    private FileNameExtractor(String[] initPaths) {
+    private DirsFileNamesExtractor(String[] initPaths) {
         init(initPaths);
     }
 
@@ -24,11 +24,11 @@ public class FileNameExtractor implements Extractor<String> {
     /**
      * Factory method to build extractor
      * @param paths directory to be parsed
-     * @return {@link FileNameExtractor} instance
+     * @return {@link DirsFileNamesExtractor} instance
      */
-    public static FileNameExtractor createExtractor(String... paths) {
+    public static DirsFileNamesExtractor createExtractor(String... paths) {
         Objects.requireNonNull(paths);
-        return new FileNameExtractor(paths);
+        return new DirsFileNamesExtractor(paths);
     }
 
     /**

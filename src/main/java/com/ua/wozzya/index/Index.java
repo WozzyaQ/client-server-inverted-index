@@ -1,6 +1,8 @@
 package com.ua.wozzya.index;
 
-import java.util.List;
+
+
+import java.util.Set;
 
 /**
  * Common interface for indexes
@@ -10,7 +12,7 @@ public interface Index {
      * @param key to search
      * @return list of entries corresponding to key
      */
-    List<String> search(String key);
+    Set<String> search(String key);
 
     long getFrequency(String key);
 

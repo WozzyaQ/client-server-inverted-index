@@ -1,14 +1,13 @@
 package com.ua.wozzya.index.single;
 
-import com.ua.wozzya.Pair;
+import com.ua.wozzya.index.Pair;
 import com.ua.wozzya.extractor.Extractor;
+import com.ua.wozzya.extractor.FileLineExtractor;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.tokenizer.Tokenizer;
 
-import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of an single
@@ -18,15 +17,14 @@ import java.util.stream.Collectors;
 public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
     private boolean readyMarker;
-    private static Pair<Long,Set<String>> EMPTY_PAIR = new Pair<>(0L, Collections.emptySet());
+    private static final Pair<Long, Set<String>> EMPTY_PAIR = new Pair<>(0L, Collections.emptySet());
     private Map<String, Pair<Long, Set<String>>> index;
 
 
+    protected InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, FileLineExtractor fileReader, boolean autobuild) {
+        super(extractor, tokenizer, fileReader);
 
-    protected InMemoryInvertedIndexStandalone(Extractor<String> extractor, Tokenizer tokenizer, boolean autobuild) {
-        super(extractor, tokenizer);
-
-        if(autobuild) {
+        if (autobuild) {
             buildIndex();
         }
     }
@@ -38,15 +36,18 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     @Override
     public void buildIndex() {
-        if(readyMarker) return;
+        if (readyMarker) {
+            throw new IllegalStateException("build method cannot be invoked twice");
+        }
 
         initIndex();
 
         List<String> fileNames = extractor.extract();
 
         for (String fileName : fileNames) {
-            collectFromFileAndStore(new File(fileName));
+            collectFromFileAndStore(fileName);
         }
+
         readyMarker = true;
     }
 
@@ -55,25 +56,17 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         return readyMarker;
     }
 
-    private void collectFromFileAndStore(File file) {
-        try (FileInputStream fis = new FileInputStream(file);
-            InputStreamReader reader = new InputStreamReader(fis);
-            BufferedReader buffReader = new BufferedReader(reader)) {
-
-            String line;
-            while((line = buffReader.readLine()) != null) {
-                String[] tokens = tokenizer.tokenize(line);
-                store(tokens, file.getPath());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void collectFromFileAndStore(String fileName) {
+        fileReader.setPathToFile(fileName);
+        while (fileReader.hasNext()) {
+            String[] tokens = tokenizer.tokenize(fileReader.next());
+            store(tokens, fileName);
         }
     }
 
     private void store(String[] tokens, String fileName) {
-        for(String token : tokens) {
-            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
+        for (String token : tokens) {
+            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new TreeSet<>()));
 
             pair.setLeft(pair.getLeft() + 1);
             Set<String> curSet = pair.getRight();
@@ -83,32 +76,22 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     }
 
     @Override
-    public List<String> search(String key) {
-        if(!readyMarker) {
-            throw new IllegalStateException("index should be built before calling search");
-        }
-
-        Objects.requireNonNull(key);
-        key = key.toLowerCase();
-
-        var pair = index.getOrDefault(key, EMPTY_PAIR);
-
-        return pair.getRight()
-                .stream()
-                .sorted()
-                .collect(Collectors.toList());
+    public Set<String> search(String key) {
+        buildCheck();
+        return getPair(key).getRight();
     }
+
 
     @Override
     public long getFrequency(String key) {
-        if(!readyMarker) {
-            throw new IllegalStateException("index should be built before calling search");
-        }
+        buildCheck();
+        return getPair(key).getLeft();
+    }
 
+    private Pair<Long, Set<String>> getPair(String key) {
         Objects.requireNonNull(key);
         key = key.toLowerCase();
 
-        var pair = index.getOrDefault(key, EMPTY_PAIR);
-        return pair.getLeft();
+        return index.getOrDefault(key, EMPTY_PAIR);
     }
 }

@@ -1,4 +1,4 @@
-package com.ua.wozzya.index.single;
+package com.ua.wozzya.index.multi;
 
 import com.ua.wozzya.extractor.DirsFileNamesExtractor;
 import com.ua.wozzya.extractor.FileLineExtractor;
@@ -6,17 +6,22 @@ import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.tokenizer.SimpleTokenizer;
 import com.ua.wozzya.tokenizer.Token;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class InMemoryInvertedIndexStandaloneTest {
+public class ConcurrentInMemoryInvertedIndexTest {
 
     static final String CONTENT = "Process finished finished finished with with exit code 0";
     static final String TEMP_FILE_NAME = "temp.txt";
@@ -85,7 +90,7 @@ public class InMemoryInvertedIndexStandaloneTest {
 
     @Test(expected = IllegalStateException.class)
     public void shouldThrowIllegalWhenTryingToFindWithoutBuilding() {
-        IndexBuilder builder = new InMemoryIndexBuilder();
+        IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
         builder.setAutoBuild(false);
         builder.setExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
@@ -95,7 +100,7 @@ public class InMemoryInvertedIndexStandaloneTest {
 
     @Test
     public void shouldFindAndReturnFileName()  {
-        IndexBuilder builder = new InMemoryIndexBuilder();
+        IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
         builder.setAutoBuild(true);
         builder.setExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
@@ -117,7 +122,7 @@ public class InMemoryInvertedIndexStandaloneTest {
 
     @Test
     public void shouldNotFindAndReturnEmptyList() {
-        IndexBuilder builder = new InMemoryIndexBuilder();
+        IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
         builder.setExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         builder.setFileLineExtractor(new FileLineExtractor());
