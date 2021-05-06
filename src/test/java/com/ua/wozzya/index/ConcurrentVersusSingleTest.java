@@ -1,7 +1,7 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.utils.extractor.ListExtractor;
-import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.FileNameListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesFileNameListExtractor;
 import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.multi.ConcurrentInMemoryIndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
@@ -26,7 +26,7 @@ public class ConcurrentVersusSingleTest {
     ReusableFileLineIterator lineExtractor = new ReusableFileLineIterator();
     Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
     String[] directories = {"test/", "train/"};
-    ListExtractor<String> fileNameListExtractor = DirsFileNamesListExtractor.createExtractor(directories);
+    FileNameListExtractor fileNameListExtractor = DirsFileNamesFileNameListExtractor.createExtractor(directories);
 
     @Before
     public void setUp() {
@@ -39,7 +39,7 @@ public class ConcurrentVersusSingleTest {
         builder.setFileLineExtractor(lineExtractor);
         builder.setAutoBuild(true);
         builder.setTokenizer(tokenizer);
-        builder.setFileNameListExtractor(fileNameListExtractor);
+        builder.setFileNameExtractor(fileNameListExtractor);
         return builder.build();
     }
 
@@ -48,7 +48,7 @@ public class ConcurrentVersusSingleTest {
         builder.setFileLineExtractor(lineExtractor);
         builder.setAutoBuild(true);
         builder.setTokenizer(tokenizer);
-        builder.setFileNameListExtractor(fileNameListExtractor);
+        builder.setFileNameExtractor(fileNameListExtractor);
         return builder.build();
     }
 

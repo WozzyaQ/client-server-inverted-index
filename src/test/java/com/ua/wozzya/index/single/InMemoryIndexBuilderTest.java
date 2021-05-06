@@ -8,7 +8,7 @@ public class InMemoryIndexBuilderTest {
     @Test(expected = NullPointerException.class)
     public void shouldThrowNPEWhenSettingNullToExtractor() {
         IndexBuilder builder = new InMemoryIndexBuilder();
-        builder.setFileNameListExtractor(null);
+        builder.setFileNameExtractor(null);
     }
 
     @Test(expected = NullPointerException.class)

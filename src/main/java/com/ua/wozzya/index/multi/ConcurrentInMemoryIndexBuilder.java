@@ -20,7 +20,7 @@ public class ConcurrentInMemoryIndexBuilder extends AbstractIndexBuilder impleme
 
     @Override
     public Index build() {
-        return new ConcurrentInMemoryInvertedIndex(listExtractor,
+        return new ConcurrentInMemoryInvertedIndex(fileNameListExtractor,
                 tokenizer,
                 iteratorFileLineExtractor,
                 threadNum,

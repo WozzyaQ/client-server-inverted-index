@@ -64,7 +64,7 @@ public class ConcurrentInMemoryInvertedIndexTest {
     public void shouldThrowIllegalWhenTryingToFindWithoutBuilding() {
         IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
         builder.setAutoBuild(false);
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         Index index = builder.build();
         index.search("some-word");
@@ -74,7 +74,7 @@ public class ConcurrentInMemoryInvertedIndexTest {
     public void shouldFindAndReturnFileName() {
         IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
         builder.setAutoBuild(true);
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();
@@ -95,7 +95,7 @@ public class ConcurrentInMemoryInvertedIndexTest {
     @Test
     public void shouldNotFindAndReturnEmptyList() {
         IndexBuilder builder = new ConcurrentInMemoryIndexBuilder();
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();

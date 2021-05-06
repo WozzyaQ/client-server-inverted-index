@@ -8,6 +8,6 @@ import com.ua.wozzya.index.IndexBuilder;
 public class InMemoryIndexBuilder extends AbstractIndexBuilder implements IndexBuilder {
     @Override
     public Index build() {
-        return new InMemoryInvertedIndexStandalone(listExtractor, tokenizer, iteratorFileLineExtractor,autoBuild);
+        return new InMemoryInvertedIndexStandalone(fileNameListExtractor, tokenizer, iteratorFileLineExtractor,autoBuild);
     }
 }

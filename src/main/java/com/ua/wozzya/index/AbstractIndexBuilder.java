@@ -1,7 +1,7 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.utils.extractor.ListExtractor;
-import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.FileLineIterator;
+import com.ua.wozzya.utils.extractor.FileNameListExtractor;
 import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.Objects;
@@ -12,15 +12,15 @@ import java.util.Objects;
  */
 //TODO builder directors
 public abstract class AbstractIndexBuilder implements IndexBuilder {
-    protected ListExtractor<String> listExtractor;
+    protected FileNameListExtractor fileNameListExtractor;
     protected Tokenizer tokenizer;
-    protected ReusableFileLineIterator iteratorFileLineExtractor;
+    protected FileLineIterator iteratorFileLineExtractor;
     protected boolean autoBuild;
 
     @Override
-    public void setFileNameListExtractor(ListExtractor<String> listExtractor) {
-        Objects.requireNonNull(listExtractor, "line extractor should not be null");
-        this.listExtractor = listExtractor;
+    public void setFileNameExtractor(FileNameListExtractor fileNameListExtractor) {
+        Objects.requireNonNull(fileNameListExtractor, "line extractor should not be null");
+        this.fileNameListExtractor = fileNameListExtractor;
     }
 
     @Override
@@ -35,7 +35,7 @@ public abstract class AbstractIndexBuilder implements IndexBuilder {
     }
 
     @Override
-    public void setFileLineExtractor(ReusableFileLineIterator iteratorFileLineExtractor) {
+    public void setFileLineExtractor(FileLineIterator iteratorFileLineExtractor) {
         Objects.requireNonNull(iteratorFileLineExtractor, "reusableFileLineIterator should not be null");
         this.iteratorFileLineExtractor = iteratorFileLineExtractor;
     }

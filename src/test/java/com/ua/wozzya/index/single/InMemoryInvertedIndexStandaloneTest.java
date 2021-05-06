@@ -60,7 +60,7 @@ public class InMemoryInvertedIndexStandaloneTest {
     public void shouldThrowIllegalWhenTryingToFindWithoutBuilding() {
         IndexBuilder builder = new InMemoryIndexBuilder();
         builder.setAutoBuild(false);
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         Index index = builder.build();
         index.search("some-word");
@@ -70,7 +70,7 @@ public class InMemoryInvertedIndexStandaloneTest {
     public void shouldFindAndReturnFileName() {
         IndexBuilder builder = new InMemoryIndexBuilder();
         builder.setAutoBuild(true);
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();
@@ -91,7 +91,7 @@ public class InMemoryInvertedIndexStandaloneTest {
     @Test
     public void shouldNotFindAndReturnEmptyList() {
         IndexBuilder builder = new InMemoryIndexBuilder();
-        builder.setFileNameListExtractor(EXTRACTOR);
+        builder.setFileNameExtractor(EXTRACTOR);
         builder.setTokenizer(new SimpleTokenizer(Token.WORD));
         builder.setFileLineExtractor(new ReusableFileLineIterator());
         Index index = builder.build();

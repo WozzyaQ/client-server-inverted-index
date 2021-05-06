@@ -7,7 +7,6 @@ package com.ua.wozzya.utils;
  * @param <R> "right" class type
  */
 public class Pair<L, R> {
-
     L left;
     R right;
 

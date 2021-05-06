@@ -1,6 +1,6 @@
 package com.ua.wozzya;
 
-import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesFileNameListExtractor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DirsFileNamesListExtractorTest {
+public class DirsFileNamesFileNameListExtractorTest {
 
     static final String TEMP_PATH = "/tempo/";
     static final String TEMP_FILE = "temp.txt";
@@ -50,7 +50,7 @@ public class DirsFileNamesListExtractorTest {
 
     @Test
     public void shouldReturnExtractorInstance() {
-        DirsFileNamesListExtractor e = DirsFileNamesListExtractor.createExtractor("path1");
+        DirsFileNamesFileNameListExtractor e = DirsFileNamesFileNameListExtractor.createExtractor("path1");
         assertNotNull(e);
     }
 
@@ -58,7 +58,7 @@ public class DirsFileNamesListExtractorTest {
     public void shouldExtractFileNamesFromPath() {
         String path = TEMP_PATH;
 
-        DirsFileNamesListExtractor extractor = DirsFileNamesListExtractor.createExtractor(path);
+        DirsFileNamesFileNameListExtractor extractor = DirsFileNamesFileNameListExtractor.createExtractor(path);
         List<String> fileNames = extractor.extract();
         assertEquals(TEMP_PATH + TEMP_FILE, fileNames.get(0));
     }
@@ -66,14 +66,14 @@ public class DirsFileNamesListExtractorTest {
     @Test
     public void extractedSizeShouldBeEqualToActual() {
         int expected = 250;
-        DirsFileNamesListExtractor extractor = DirsFileNamesListExtractor.createExtractor("test/neg/");
+        DirsFileNamesFileNameListExtractor extractor = DirsFileNamesFileNameListExtractor.createExtractor("test/neg/");
         int actual = extractor.extract().size();
         assertEquals(expected, actual);
     }
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowIllegalStateExceptionWhenNoPathSupplied() {
-        DirsFileNamesListExtractor.createExtractor(null);
+        DirsFileNamesFileNameListExtractor.createExtractor(null);
     }
 
 }

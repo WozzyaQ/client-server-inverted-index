@@ -1,6 +1,6 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesFileNameListExtractor;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ public class TestIndexUtils {
     public static final String SINGLE_LINE_CONTENT = "Process finished finished finished with with exit code 0";
     public static final String TEMP_FILE_NAME = "temp.txt";
     public static final String TEMP_PATH = "temp/";
-    public static final DirsFileNamesListExtractor EXTRACTOR = DirsFileNamesListExtractor.createExtractor(TEMP_PATH);
+    public static final DirsFileNamesFileNameListExtractor EXTRACTOR = DirsFileNamesFileNameListExtractor.createExtractor(TEMP_PATH);
 
 
     public static void setUp()  {

@@ -4,14 +4,14 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Simple implementation of {@link ListExtractor} interface
+ * Simple implementation of {@link FileNameListExtractor} interface
  * Extracts file names from specified directories
  */
-public class DirsFileNamesListExtractor implements ListExtractor<String> {
+public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor {
     private String[] paths;
     private final List<String> fileNames = new LinkedList<>();
 
-    private DirsFileNamesListExtractor(String[] initPaths) {
+    private DirsFileNamesFileNameListExtractor(String[] initPaths) {
         init(initPaths);
     }
 
@@ -24,11 +24,11 @@ public class DirsFileNamesListExtractor implements ListExtractor<String> {
      * Factory method to build extractor
      *
      * @param paths directory to be parsed
-     * @return {@link DirsFileNamesListExtractor} instance
+     * @return {@link DirsFileNamesFileNameListExtractor} instance
      */
-    public static DirsFileNamesListExtractor createExtractor(String... paths) {
+    public static DirsFileNamesFileNameListExtractor createExtractor(String... paths) {
         Objects.requireNonNull(paths, "paths should not be null");
-        return new DirsFileNamesListExtractor(paths);
+        return new DirsFileNamesFileNameListExtractor(paths);
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.ua.wozzya.index.single;
 
 import com.ua.wozzya.utils.Pair;
-import com.ua.wozzya.utils.extractor.ListExtractor;
-import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.FileLineIterator;
+import com.ua.wozzya.utils.extractor.FileNameListExtractor;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.utils.tokenizer.Tokenizer;
@@ -21,8 +21,8 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     private Map<String, Pair<Long, Set<String>>> index;
 
 
-    protected InMemoryInvertedIndexStandalone(ListExtractor<String> listExtractor, Tokenizer tokenizer, ReusableFileLineIterator fileReader, boolean autobuild) {
-        super(listExtractor, tokenizer, fileReader);
+    protected InMemoryInvertedIndexStandalone(FileNameListExtractor fileNameListExtractor, Tokenizer tokenizer, FileLineIterator fileReader, boolean autobuild) {
+        super(fileNameListExtractor, tokenizer, fileReader);
 
         if (autobuild) {
             buildIndex();
@@ -48,7 +48,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         initIndex();
 
         //extract all fileNames
-        List<String> fileNames = listExtractor.extract();
+        List<String> fileNames = fileNameListExtractor.extract();
 
         for (String fileName : fileNames) {
             collectFromFileAndStore(fileName);
