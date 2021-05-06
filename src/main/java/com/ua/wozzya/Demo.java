@@ -14,7 +14,7 @@ import com.ua.wozzya.utils.tokenizer.Tokenizer;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class App 
+public class Demo
 {
     /**
      * Usage example
