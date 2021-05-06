@@ -1,13 +1,13 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
-import com.ua.wozzya.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.ListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.multi.ConcurrentInMemoryIndexBuilder;
 import com.ua.wozzya.index.single.InMemoryIndexBuilder;
-import com.ua.wozzya.tokenizer.SimpleTokenizer;
-import com.ua.wozzya.tokenizer.Token;
-import com.ua.wozzya.tokenizer.Tokenizer;
+import com.ua.wozzya.utils.tokenizer.SimpleTokenizer;
+import com.ua.wozzya.utils.tokenizer.Token;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,6 +82,8 @@ public class ConcurrentVersusSingleTest {
             assertEquals(curInMulti, curInSingle);
         }
     }
+
+
 
     @Test
     public void concurrentShouldBeFasterThanSingleInMostCases() {

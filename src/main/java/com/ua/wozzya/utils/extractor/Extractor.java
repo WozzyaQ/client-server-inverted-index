@@ -1,4 +1,4 @@
-package com.ua.wozzya.extractor;
+package com.ua.wozzya.utils.extractor;
 
 /**
  * Functional interface that serves

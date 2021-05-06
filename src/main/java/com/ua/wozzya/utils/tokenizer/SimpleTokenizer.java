@@ -1,4 +1,4 @@
-package com.ua.wozzya.tokenizer;
+package com.ua.wozzya.utils.tokenizer;
 
 
 import java.util.LinkedList;

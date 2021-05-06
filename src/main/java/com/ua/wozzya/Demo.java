@@ -1,15 +1,15 @@
 package com.ua.wozzya;
 
 import com.google.common.base.Stopwatch;
-import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
-import com.ua.wozzya.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.ListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
 import com.ua.wozzya.index.multi.ConcurrentInMemoryIndexBuilder;
-import com.ua.wozzya.tokenizer.SimpleTokenizer;
-import com.ua.wozzya.tokenizer.Token;
-import com.ua.wozzya.tokenizer.Tokenizer;
+import com.ua.wozzya.utils.tokenizer.SimpleTokenizer;
+import com.ua.wozzya.utils.tokenizer.Token;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

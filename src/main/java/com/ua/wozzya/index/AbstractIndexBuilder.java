@@ -1,8 +1,8 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.ReusableFileLineIterator;
-import com.ua.wozzya.tokenizer.Tokenizer;
+import com.ua.wozzya.utils.extractor.ListExtractor;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.Objects;
 

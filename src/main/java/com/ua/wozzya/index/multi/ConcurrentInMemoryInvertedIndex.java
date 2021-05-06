@@ -1,12 +1,12 @@
 package com.ua.wozzya.index.multi;
 
-import com.ua.wozzya.extractor.FileLineIterator;
+import com.ua.wozzya.utils.extractor.FileLineIterator;
 import com.ua.wozzya.utils.Pair;
-import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.ListExtractor;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
-import com.ua.wozzya.tokenizer.Tokenizer;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

@@ -1,11 +1,11 @@
 package com.ua.wozzya.index.single;
 
 import com.ua.wozzya.index.TestIndexUtils;
-import com.ua.wozzya.extractor.ReusableFileLineIterator;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.index.IndexBuilder;
-import com.ua.wozzya.tokenizer.SimpleTokenizer;
-import com.ua.wozzya.tokenizer.Token;
+import com.ua.wozzya.utils.tokenizer.SimpleTokenizer;
+import com.ua.wozzya.utils.tokenizer.Token;
 import org.junit.*;
 
 import java.io.*;

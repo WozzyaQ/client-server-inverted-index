@@ -1,6 +1,6 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
 
 import java.io.*;
 import java.nio.file.Files;

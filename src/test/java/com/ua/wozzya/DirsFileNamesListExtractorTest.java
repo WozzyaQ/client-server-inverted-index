@@ -1,6 +1,6 @@
 package com.ua.wozzya;
 
-import com.ua.wozzya.extractor.DirsFileNamesListExtractor;
+import com.ua.wozzya.utils.extractor.DirsFileNamesListExtractor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

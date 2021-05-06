@@ -1,6 +1,8 @@
 package com.ua.wozzya.tokenizer;
 
-import org.junit.After;
+import com.ua.wozzya.utils.tokenizer.SimpleTokenizer;
+import com.ua.wozzya.utils.tokenizer.Token;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 import org.junit.Before;
 import org.junit.Test;
 

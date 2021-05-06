@@ -1,8 +1,8 @@
 package com.ua.wozzya.index;
 
-import com.ua.wozzya.extractor.FileLineIterator;
-import com.ua.wozzya.extractor.ListExtractor;
-import com.ua.wozzya.tokenizer.Tokenizer;
+import com.ua.wozzya.utils.extractor.FileLineIterator;
+import com.ua.wozzya.utils.extractor.ListExtractor;
+import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 public abstract class AbstractIndex implements Index {
     protected final ListExtractor<String> listExtractor;

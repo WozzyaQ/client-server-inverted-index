@@ -1,6 +1,7 @@
 package com.ua.wozzya.extractor;
 
 import com.ua.wozzya.index.TestIndexUtils;
+import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
