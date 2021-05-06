@@ -25,7 +25,7 @@ public class ConcurrentVersusSingleTest {
 
     ReusableFileLineIterator lineExtractor = new ReusableFileLineIterator();
     Tokenizer tokenizer = new SimpleTokenizer(Token.WORD);
-    String[] directories = {"test/", "train/"};
+    String[] directories = {"./test", "./train"};
     FileNameListExtractor fileNameListExtractor = DirsFileNamesFileNameListExtractor.createExtractor(directories);
 
     @Before

@@ -11,8 +11,9 @@ public class TestIndexUtils {
 
     public static final String SINGLE_LINE_CONTENT = "Process finished finished finished with with exit code 0";
     public static final String TEMP_FILE_NAME = "temp.txt";
-    public static final String TEMP_PATH = "temp/";
-    public static final DirsFileNamesFileNameListExtractor EXTRACTOR = DirsFileNamesFileNameListExtractor.createExtractor(TEMP_PATH);
+    static final String SEPARATOR = File.separator;
+    public static final String TEMP_PATH = "temp" + SEPARATOR;
+    public static  DirsFileNamesFileNameListExtractor EXTRACTOR;
 
 
     public static void setUp()  {
@@ -33,6 +34,8 @@ public class TestIndexUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        EXTRACTOR = DirsFileNamesFileNameListExtractor.createExtractor(TEMP_PATH);
 
     }
 

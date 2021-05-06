@@ -16,8 +16,9 @@ import static org.junit.Assert.*;
 
 public class DirsFileNamesFileNameListExtractorTest {
 
-    static final String TEMP_PATH = "/tempo/";
-    static final String TEMP_FILE = "temp.txt";
+    static final String SEPARATOR = File.separator;
+    static final String TEMP_PATH = SEPARATOR + "tempo" + SEPARATOR;
+    static final String TEMP_FILE =  "temp.txt";
 
     @Before
     public void setUp() {
@@ -50,7 +51,7 @@ public class DirsFileNamesFileNameListExtractorTest {
 
     @Test
     public void shouldReturnExtractorInstance() {
-        DirsFileNamesFileNameListExtractor e = DirsFileNamesFileNameListExtractor.createExtractor("path1");
+        DirsFileNamesFileNameListExtractor e = DirsFileNamesFileNameListExtractor.createExtractor("/");
         assertNotNull(e);
     }
 

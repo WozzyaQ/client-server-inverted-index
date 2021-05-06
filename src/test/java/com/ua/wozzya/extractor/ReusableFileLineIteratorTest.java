@@ -23,7 +23,7 @@ public class ReusableFileLineIteratorTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionWhenSupplingADirectory() {
         ReusableFileLineIterator ex = new ReusableFileLineIterator();
-        ex.setPathToFile("/");
+        ex.setPathToFile("./");
     }
 
     @Test
@@ -42,4 +42,5 @@ public class ReusableFileLineIteratorTest {
         String actualContent = sb.toString();
         assertEquals(expectedContent, actualContent);
     }
+
 }

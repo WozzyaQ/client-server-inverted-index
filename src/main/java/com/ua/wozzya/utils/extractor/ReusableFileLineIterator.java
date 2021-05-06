@@ -41,7 +41,7 @@ public class ReusableFileLineIterator implements FileLineIterator {
 
     private void readAllLines() {
         var file = new File(pathToFile);
-        if (!file.isFile()) {
+        if (file.isDirectory()) {
             throw new IllegalArgumentException("only works for files, not directories");
         }
 
