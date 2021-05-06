@@ -1,11 +1,11 @@
 package com.ua.wozzya;
 
 
-import com.ua.wozzya.client.SimpleQueryClient;
+import com.ua.wozzya.client.SimpleConsoleCyclicMessenger;
 
 public class AppClient {
     public static void main(String[] args) {
-        SimpleQueryClient client = new SimpleQueryClient("127.0.0.1", 2236);
+        SimpleConsoleCyclicMessenger client = new SimpleConsoleCyclicMessenger("127.0.0.1", 2236);
         client.connect();
     }
 }
