@@ -7,6 +7,7 @@ import com.ua.wozzya.index.AbstractIndex;
 import com.ua.wozzya.index.Index;
 import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -143,12 +144,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     @Override
     public Set<String> search(String key) {
         indexReadinessCheck();
-        return index.getOrDefault(key, EMPTY_PAIR)
-                .getRight()
-                .stream()
-                .sorted()
-                // TODO optimize sorting
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        return index.getOrDefault(key, EMPTY_PAIR).getRight();
     }
 
     @Override

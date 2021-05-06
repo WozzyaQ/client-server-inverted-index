@@ -65,7 +65,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     private void store(String[] tokens, String fileName) {
         for (String token : tokens) {
-            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new TreeSet<>()));
+            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
 
             pair.setLeft(pair.getLeft() + 1);
             Set<String> curSet = pair.getRight();
