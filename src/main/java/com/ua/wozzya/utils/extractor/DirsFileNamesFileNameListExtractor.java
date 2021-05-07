@@ -9,9 +9,10 @@ import java.util.*;
  * Simple implementation of {@link FileNameListExtractor} interface
  * Extracts file names from specified directories
  */
+
 public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor {
     private String[] paths;
-    private final List<String> fileNames = new LinkedList<>();
+    private final List<String> fileNames = new ArrayList<>();
 
     private DirsFileNamesFileNameListExtractor(String[] initPaths) {
         init(initPaths);
@@ -28,7 +29,7 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
     /**
      * Factory method to build extractor
      *
-     * @param paths directory to be parsed
+     * @param paths existing directory to be parsed
      * @return {@link DirsFileNamesFileNameListExtractor} instance
      */
     public static DirsFileNamesFileNameListExtractor createExtractor(String... paths) {
@@ -36,14 +37,16 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
         return new DirsFileNamesFileNameListExtractor(paths);
     }
 
-    public static class PathTransformer {
+    /**
+     * Ensures that directory exists
+     * and makes paths platform independent
+     */
+    private static class PathTransformer {
 
         public static String checkAndTransform(String suppliedPath) {
             Path path = Paths.get(suppliedPath);
             String transformed = path.normalize().toString();
-            System.out.println(transformed);
             checkExistence(transformed);
-            System.out.println(transformed);
             return transformed;
         }
 
@@ -71,7 +74,6 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
 
     private void extractFromAllPaths() {
         for (String path : paths) {
-            System.out.println(path);
             extractFromPath(path, new File(path));
         }
     }
@@ -86,7 +88,6 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
                 if (file.isDirectory()) {
                     extractFromPath(basePath + File.separator + fileName, file);
                 } else {
-                    //TODO Consider filtering by name
                     fileNames.add(basePath + File.separator + fileName);
                 }
             }
