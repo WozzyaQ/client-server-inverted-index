@@ -20,10 +20,12 @@ public class IndexClientHandler extends Thread {
     private final Index index;
     private BufferedReader fromClient;
     private PrintWriter toClient;
+    private int clientId;
 
-    private IndexClientHandler(Index index, Socket clientSocket) {
+    private IndexClientHandler(Index index, Socket clientSocket, int clientId) {
         this.index = index;
         this.clientSocket = clientSocket;
+        this.clientId = clientId;
     }
 
     private void initIO() {
@@ -35,24 +37,25 @@ public class IndexClientHandler extends Thread {
         }
     }
 
-    public static IndexClientHandler create(Index index, Socket clientSocket) {
-        return new IndexClientHandler(index, clientSocket);
+    public static IndexClientHandler create(Index index, Socket clientSocket, int id) {
+        return new IndexClientHandler(index, clientSocket, id);
     }
 
     @Override
     public void run() {
         initIO();
-        String msgFromClient;
+        String msgFromClient = "";
 
         //on accept, send termination line, client is awaiting for it
         sendTerminationLine();
 
-        while (true) {
+
+        while ((msgFromClient != null) && !msgFromClient.equalsIgnoreCase("/exit")) {
             try {
                 msgFromClient = fromClient.readLine();
-                if ((msgFromClient == null) || msgFromClient.equalsIgnoreCase("exit")) {
-                    clientSocket.close();
-                    return;
+                if ((msgFromClient == null) || msgFromClient.equalsIgnoreCase("/exit")) {
+                    toClient.println("[finished]" + EOF);
+
                 } else {
                     var response = makeStringResponse(index.search(msgFromClient));
                     toClient.println(response + EOF);
@@ -62,6 +65,16 @@ public class IndexClientHandler extends Thread {
                 e.printStackTrace();
                 return;
             }
+        }
+        close();
+    }
+
+    private void close() {
+        System.out.println("[client #" + clientId + " disconnected]");
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

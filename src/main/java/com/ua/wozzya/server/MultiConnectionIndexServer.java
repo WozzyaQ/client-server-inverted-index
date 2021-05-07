@@ -33,13 +33,14 @@ public class MultiConnectionIndexServer {
 
     private void accept() {
         Socket clientSocket;
+        int id = 0;
         while (true) {
             try {
                 //wait on client
                 clientSocket = serverSocket.accept();
 
                 //on client acceptance - handle
-                IndexClientHandler.create(index, clientSocket).start();
+                IndexClientHandler.create(index, clientSocket, ++id).start();
                 System.out.println("[clinet has been accepted]");
             } catch (IOException e) {
                 e.printStackTrace();

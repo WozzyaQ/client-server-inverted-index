@@ -103,8 +103,11 @@ public final class SimpleConsoleCyclicMessenger
         do {
             clientMsg = readFromClient();
             writeToServer(clientMsg);
+            if (clientMsg.equalsIgnoreCase("/exit")) {
+                return;
+            }
             writeToClient(receiveFromServer());
 
-        } while (!clientMsg.equalsIgnoreCase("EXIT"));
+        } while (true);
     }
 }
