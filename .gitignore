@@ -1,6 +1,7 @@
 #other files
 *.pdf
 temp/**
+target/**/*.properties
 
 # IntelliJ Idea
 .idea
