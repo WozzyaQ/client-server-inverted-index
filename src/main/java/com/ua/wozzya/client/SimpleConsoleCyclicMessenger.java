@@ -4,10 +4,15 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * Implementation of {@link CyclicMessenger}
+ * Talking to a server via text data
+ */
 public final class SimpleConsoleCyclicMessenger
-        extends AbstractClient
+        extends AbstractConsoleClient
         implements CyclicMessenger<String, String, String, String> {
 
+    // termination of server out
     private String terminator;
     private final PrintStream clientOut = System.out;
 
@@ -54,6 +59,11 @@ public final class SimpleConsoleCyclicMessenger
         return payload;
     }
 
+    /**
+     * Reads until termination line occurs
+     *
+     * @return formatted string message from the server
+     */
     @Override
     public String receiveFromServer() {
         var sb = new StringBuilder();
@@ -75,6 +85,8 @@ public final class SimpleConsoleCyclicMessenger
         serverIn.flush();
     }
 
+    //receive and memorize termination line from server
+    //on start
     private void receiveTerminationLine() {
         try {
             terminator = serverOut.readLine();
@@ -93,6 +105,6 @@ public final class SimpleConsoleCyclicMessenger
             writeToServer(clientMsg);
             writeToClient(receiveFromServer());
 
-        } while (!clientMsg.equals("QUIT"));
+        } while (!clientMsg.equalsIgnoreCase("EXIT"));
     }
 }

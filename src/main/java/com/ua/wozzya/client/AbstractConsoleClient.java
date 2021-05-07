@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public abstract class AbstractClient {
-    protected static final int DEFAULT_ATTEMPTS_TO_CONNET = 5;
-    protected static final long DEFAULT_PAUSE_BETWEEN_CONNECTS = 200;
-
+/**
+ * Represents abstract client
+ * that enters information
+ * via STDIN
+ */
+public abstract class AbstractConsoleClient {
     protected final String ip;
     protected final int port;
     protected final BufferedReader clientIn;
@@ -18,7 +20,7 @@ public abstract class AbstractClient {
     protected PrintWriter serverIn;
     protected BufferedReader serverOut;
 
-    protected AbstractClient(String ip, int port) {
+    protected AbstractConsoleClient(String ip, int port) {
         this.ip = ip;
         this.port = port;
         clientIn = new BufferedReader(new InputStreamReader(System.in));
@@ -27,12 +29,11 @@ public abstract class AbstractClient {
     // establishing connection and starting messaging with server
     protected abstract void connect();
 
-    //close all the connections
+    //close I/Os
     protected void disconnect() {
-        serverIn.close();
-        serverIn.close();
         try {
-            clientIn.close();
+            serverOut.close();
+            serverIn.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
