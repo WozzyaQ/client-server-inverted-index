@@ -78,7 +78,6 @@ public final class DirsFileNamesFileNameListExtractor implements FileNameListExt
         if (fileNames.isEmpty()) {
             extractFromAllPaths();
         }
-        System.out.println(fileNames.size());
         return fileNames;
     }
 

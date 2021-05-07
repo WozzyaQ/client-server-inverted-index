@@ -1,6 +1,10 @@
 #other files
 *.pdf
-temp/**
+
+/temp/**/*.txt
+
+!/temp/**/*.csv
+
 target/**/*.properties
 
 # IntelliJ Idea
