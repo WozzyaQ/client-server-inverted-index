@@ -7,7 +7,6 @@ import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.*;
 
-// docs & logging
 public abstract class AbstractIndex implements Index {
 
     protected static final Pair<Long, Set<String>> EMPTY_PAIR = new Pair<>(0L, Collections.emptySet());

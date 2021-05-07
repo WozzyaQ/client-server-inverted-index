@@ -10,7 +10,6 @@ import java.util.Objects;
  * Abstract implementation of {@link IndexBuilder} interface
  * Encapsulates common setter logic
  */
-//TODO builder directors
 public abstract class AbstractIndexBuilder implements IndexBuilder {
     protected FileNameListExtractor fileNameListExtractor;
     protected Tokenizer tokenizer;

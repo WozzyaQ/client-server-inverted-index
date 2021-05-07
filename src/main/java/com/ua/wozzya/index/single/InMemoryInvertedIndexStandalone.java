@@ -8,15 +8,12 @@ import com.ua.wozzya.index.Index;
 import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Implementation of an single
  * threaded, single-pass inverted index
  * that processes data in-memory
  */
-
-//TODO docs & refactoring & logging
 public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
     private boolean readyMarker;
@@ -61,7 +58,9 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     @Override
     protected void store(String[] tokens, String fileName) {
         for (String token : tokens) {
-            Pair<Long, Set<String>> pair = (Pair<Long, Set<String>>) index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
+            Pair<Long, Set<String>> pair =
+                    (Pair<Long, Set<String>>) index.getOrDefault(token,
+                            new Pair<>(0L, new HashSet<>()));
 
             pair.setLeft(pair.getLeft() + 1);
             Set<String> curSet = pair.getRight();
