@@ -1,6 +1,7 @@
 package com.ua.wozzya.utils.tokenizer;
 
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -31,5 +32,11 @@ public class SimpleTokenizer implements Tokenizer {
             tokenList.add(m.group(token.getGroupIndex()).toLowerCase());
         }
         return tokenList.toArray(new String[0]);
+    }
+
+    @Override
+    public String[] tokenizeDistinct(String text) {
+        String[] tokens = tokenize(text);
+        return Arrays.stream(tokens).distinct().toArray(String[]::new);
     }
 }

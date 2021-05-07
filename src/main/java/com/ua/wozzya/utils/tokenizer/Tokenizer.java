@@ -17,6 +17,8 @@ public interface Tokenizer {
      */
     String[] tokenize(String text);
 
+    String[] tokenizeDistinct(String text);
+
     static Tokenizer getDefault() {
         return new SimpleTokenizer(Token.DEFAULT);
     }
