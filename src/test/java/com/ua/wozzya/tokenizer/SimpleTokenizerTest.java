@@ -13,13 +13,13 @@ import static org.junit.Assert.*;
 
 public class SimpleTokenizerTest {
 
-    String[] splittedText = {"this","is","my","text","that","will","be","tokenized","text", "we'll"};
+    String[] splittedText = {"this", "is", "my", "text", "that", "will", "be", "tokenized", "text", "we'll"};
     String joinedText;
 
     @Before
     public void setUp() {
         StringBuilder sb = new StringBuilder();
-        for(String s : splittedText) {
+        for (String s : splittedText) {
             sb.append(s + " ");
         }
 
