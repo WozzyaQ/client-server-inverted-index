@@ -14,6 +14,8 @@ import java.util.*;
  * threaded, single-pass inverted index
  * that processes data in-memory
  */
+
+//TODO docs & refactoring & logging
 public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
     private boolean readyMarker;
@@ -59,7 +61,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
 
     private void collectFromFileAndStore(String fileName) {
         lineIterator.setPathToFile(fileName);
-        String[] tokens = tokenizer.tokenize(lineIterator.extract());
+        String[] tokens = tokenizer.tokenizeDistinct(lineIterator.extract());
         store(tokens,fileName);
     }
 

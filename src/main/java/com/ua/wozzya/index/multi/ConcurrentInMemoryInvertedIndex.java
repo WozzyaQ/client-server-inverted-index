@@ -12,12 +12,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
+//TODO docs & logging & refactoring
 public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements Index {
 
     private static final Pair<AtomicLong, Set<String>> EMPTY_PAIR =
             new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet());
+
 
     private Map<String, Pair<AtomicLong, Set<String>>> index;
 
@@ -118,7 +119,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
 
     private void collectFromFileAndStore(String fileName, FileLineIterator lineExtractor) {
         lineExtractor.setPathToFile(fileName);
-        String[] tokens = tokenizer.tokenize(lineExtractor.extract());
+        String[] tokens = tokenizer.tokenizeDistinct(lineExtractor.extract());
         store(tokens, fileName);
     }
 
