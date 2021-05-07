@@ -1,4 +1,4 @@
 #!/bin/bash
 cd ..
-java -cp "./lib/*:./bin/" com.ua.wozzya.AppServer
+java -cp "./lib/*;./bin/" com.ua.wozzya.AppServer "$@"
 
