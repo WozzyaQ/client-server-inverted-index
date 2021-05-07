@@ -118,6 +118,7 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void store(String[] tokens, String fileName) {
         for (String token : tokens) {
             Pair<AtomicLong, Set<String>> pair = (Pair<AtomicLong, Set<String>>) index.getOrDefault(token,

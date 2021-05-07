@@ -56,6 +56,7 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void store(String[] tokens, String fileName) {
         for (String token : tokens) {
             Pair<Long, Set<String>> pair =
