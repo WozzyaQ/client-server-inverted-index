@@ -10,14 +10,18 @@ import java.util.*;
  * Extracts file names from specified directories
  */
 
-public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor {
+public final class DirsFileNamesFileNameListExtractor implements FileNameListExtractor {
     private String[] paths;
     private final List<String> fileNames = new ArrayList<>();
+    int fileLimit = Integer.MAX_VALUE;
 
     private DirsFileNamesFileNameListExtractor(String[] initPaths) {
         init(initPaths);
     }
-
+    private DirsFileNamesFileNameListExtractor(int fileLimit, String[] initPaths) {
+        this.fileLimit = fileLimit;
+        init(initPaths);
+    }
     private void init(String[] initPaths) {
         paths = new String[initPaths.length];
         for (int i = 0; i < initPaths.length; ++i) {
@@ -35,6 +39,11 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
     public static DirsFileNamesFileNameListExtractor createExtractor(String... paths) {
         Objects.requireNonNull(paths, "paths should not be null");
         return new DirsFileNamesFileNameListExtractor(paths);
+    }
+
+    public static DirsFileNamesFileNameListExtractor createExtractor(int fileLimit, String... paths) {
+        Objects.requireNonNull(paths, "paths should not be null");
+        return new DirsFileNamesFileNameListExtractor(fileLimit, paths);
     }
 
     /**
@@ -69,11 +78,14 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
         if (fileNames.isEmpty()) {
             extractFromAllPaths();
         }
+        System.out.println(fileNames.size());
         return fileNames;
     }
 
     private void extractFromAllPaths() {
         for (String path : paths) {
+            if(fileNames.size() == fileLimit) break;
+
             extractFromPath(path, new File(path));
         }
     }
@@ -88,6 +100,7 @@ public class DirsFileNamesFileNameListExtractor implements FileNameListExtractor
                 if (file.isDirectory()) {
                     extractFromPath(basePath + File.separator + fileName, file);
                 } else {
+                    if(fileNames.size() == fileLimit) return;
                     fileNames.add(basePath + File.separator + fileName);
                 }
             }
