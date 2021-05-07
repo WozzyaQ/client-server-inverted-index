@@ -4,4 +4,4 @@ rm -rf ./bin
 mkdir bin
 
 shopt -s globstar
-javac -cp "./lib/*" -d bin src/**/main/**/*.java
+javac -Xlint:unchecked -cp "./lib/*" -d bin src/**/main/**/*.java
