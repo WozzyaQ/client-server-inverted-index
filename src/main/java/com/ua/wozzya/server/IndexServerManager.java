@@ -5,17 +5,12 @@ import com.ua.wozzya.index.Index;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class IndexServerManager {
-    //TODO consider reading from properties
     private final int port;
-    private final int MAX_CLIENTS = 10;
 
     private ServerSocket serverSocket;
-    private Index index;
+    private final Index index;
 
     public IndexServerManager(int port, Index index) {
         if (!index.isReady()) {
@@ -32,21 +27,15 @@ public class IndexServerManager {
     }
 
     private void accept() {
-        Socket clientSocket = null;
-        List<Thread> threadList = new ArrayList<>();
+        Socket clientSocket;
         while (true) {
             try {
-                System.out.println("waiting on client");
                 clientSocket = serverSocket.accept();
-                IndexClientResponser responser = IndexClientResponser.create(index, clientSocket);
-                responser.start();
-                threadList.add(responser);
-                System.out.println("clinet accepted");
+                IndexClientHandler.create(index, clientSocket).start();
+                System.out.println("[clinet has been accepted]");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -55,7 +44,6 @@ public class IndexServerManager {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
     }
 
@@ -64,7 +52,6 @@ public class IndexServerManager {
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
     }
 }

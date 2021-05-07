@@ -6,18 +6,18 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Set;
 
-public class IndexClientResponser extends Thread {
+public class IndexClientHandler extends Thread {
     private final Socket clientSocket;
-    private Index index;
+    private final Index index;
     private BufferedReader fromClient;
     private PrintWriter toClient;
 
-    private static final String LINESEP = System.lineSeparator();
+    private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String TERMINATOR = "$";
-    private static final String EOF = LINESEP + TERMINATOR;
+    private static final String EOF = LINE_SEPARATOR + TERMINATOR;
 
 
-    private IndexClientResponser(Index index, Socket clientSocket) {
+    private IndexClientHandler(Index index, Socket clientSocket) {
         this.index = index;
         this.clientSocket = clientSocket;
 
@@ -32,10 +32,8 @@ public class IndexClientResponser extends Thread {
         }
     }
 
-    public static IndexClientResponser create(Index index, Socket clientSocket) {
-
-        IndexClientResponser responser = new IndexClientResponser(index, clientSocket);
-        return responser;
+    public static IndexClientHandler create(Index index, Socket clientSocket) {
+        return new IndexClientHandler(index, clientSocket);
     }
 
     @Override
@@ -46,15 +44,13 @@ public class IndexClientResponser extends Thread {
 
         while (true) {
             try {
-                System.out.println("reading from client");
                 msgFromClient = fromClient.readLine();
-                System.out.println("got msg from clinet-->" + msgFromClient);
                 if ((msgFromClient == null) || msgFromClient.equalsIgnoreCase("QUIT")) {
                     clientSocket.close();
                     return;
                 } else {
-                    String responce = makeStringResponse(index.search(msgFromClient));
-                    toClient.println(responce + EOF);
+                    var response = makeStringResponse(index.search(msgFromClient));
+                    toClient.println(response + EOF);
                     toClient.flush();
                 }
             } catch (IOException e) {
@@ -70,14 +66,13 @@ public class IndexClientResponser extends Thread {
     }
 
     private String makeStringResponse(Set<String> foundSet) {
-        System.out.println(foundSet);
-        if(foundSet.isEmpty()) {
+        if (foundSet.isEmpty()) {
             return "NOT FOUND";
         }
 
         StringBuilder sb = new StringBuilder();
-        foundSet.stream().forEach(s -> sb.append(s).append(LINESEP));
-        sb.delete(sb.lastIndexOf(LINESEP), sb.length());
+        foundSet.forEach(s -> sb.append(s).append(LINE_SEPARATOR));
+        sb.delete(sb.lastIndexOf(LINE_SEPARATOR), sb.length());
         return sb.toString();
     }
 }
