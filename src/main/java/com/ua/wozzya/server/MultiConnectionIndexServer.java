@@ -6,13 +6,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class IndexServerManager {
+/**
+ * Represents server that handles
+ * multiples connection
+ */
+public class MultiConnectionIndexServer {
     private final int port;
 
     private ServerSocket serverSocket;
     private final Index index;
 
-    public IndexServerManager(int port, Index index) {
+    //should be supplied with ready index
+    public MultiConnectionIndexServer(int port, Index index) {
         if (!index.isReady()) {
             throw new IllegalStateException("index should be built before supplying");
         }
@@ -30,7 +35,10 @@ public class IndexServerManager {
         Socket clientSocket;
         while (true) {
             try {
+                //wait on client
                 clientSocket = serverSocket.accept();
+
+                //on client acceptance - handle
                 IndexClientHandler.create(index, clientSocket).start();
                 System.out.println("[clinet has been accepted]");
             } catch (IOException e) {
