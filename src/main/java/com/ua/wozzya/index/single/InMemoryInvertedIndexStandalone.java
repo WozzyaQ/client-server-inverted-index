@@ -8,6 +8,7 @@ import com.ua.wozzya.index.Index;
 import com.ua.wozzya.utils.tokenizer.Tokenizer;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Implementation of an single
@@ -19,8 +20,6 @@ import java.util.*;
 public class InMemoryInvertedIndexStandalone extends AbstractIndex implements Index {
 
     private boolean readyMarker;
-    private static final Pair<Long, Set<String>> EMPTY_PAIR = new Pair<>(0L, Collections.emptySet());
-    private Map<String, Pair<Long, Set<String>>> index;
 
 
     protected InMemoryInvertedIndexStandalone(FileNameListExtractor fileNameListExtractor, Tokenizer tokenizer, FileLineIterator fileReader, boolean autobuild) {
@@ -59,15 +58,10 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         readyMarker = true;
     }
 
-    private void collectFromFileAndStore(String fileName) {
-        lineIterator.setPathToFile(fileName);
-        String[] tokens = tokenizer.tokenizeDistinct(lineIterator.extract());
-        store(tokens,fileName);
-    }
-
-    private void store(String[] tokens, String fileName) {
+    @Override
+    protected void store(String[] tokens, String fileName) {
         for (String token : tokens) {
-            Pair<Long, Set<String>> pair = index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
+            Pair<Long, Set<String>> pair = (Pair<Long, Set<String>>) index.getOrDefault(token, new Pair<>(0L, new HashSet<>()));
 
             pair.setLeft(pair.getLeft() + 1);
             Set<String> curSet = pair.getRight();
@@ -76,19 +70,14 @@ public class InMemoryInvertedIndexStandalone extends AbstractIndex implements In
         }
     }
 
-    @Override
-    public Set<String> search(String key) {
-        indexReadinessCheck();
-        return getPair(key).getRight();
-    }
 
     @Override
     public long getFrequency(String key) {
         indexReadinessCheck();
-        return getPair(key).getLeft();
+        return (long) getPair(key).getLeft();
     }
 
-    private Pair<Long, Set<String>> getPair(String key) {
+    private Pair<? extends Number, Set<String>> getPair(String key) {
         Objects.requireNonNull(key, "key shouldn't be null");
         key = key.toLowerCase();
 

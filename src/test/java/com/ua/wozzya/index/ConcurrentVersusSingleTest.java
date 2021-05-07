@@ -1,5 +1,6 @@
 package com.ua.wozzya.index;
 
+import com.ua.wozzya.index.multi.ConcurrentIndexBuilder;
 import com.ua.wozzya.utils.extractor.FileNameListExtractor;
 import com.ua.wozzya.utils.extractor.DirsFileNamesFileNameListExtractor;
 import com.ua.wozzya.utils.extractor.ReusableFileLineIterator;
@@ -40,6 +41,8 @@ public class ConcurrentVersusSingleTest {
         builder.setAutoBuild(true);
         builder.setTokenizer(tokenizer);
         builder.setFileNameExtractor(fileNameListExtractor);
+
+        ((ConcurrentIndexBuilder) builder).setNumberOfProcessingThreads(2);
         return builder.build();
     }
 
@@ -82,7 +85,6 @@ public class ConcurrentVersusSingleTest {
             assertEquals(curInMulti, curInSingle);
         }
     }
-
 
 
     @Test

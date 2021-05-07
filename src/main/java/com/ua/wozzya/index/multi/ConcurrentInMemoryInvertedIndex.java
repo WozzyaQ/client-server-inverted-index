@@ -16,12 +16,6 @@ import java.util.concurrent.atomic.AtomicLong;
 //TODO docs & logging & refactoring
 public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements Index {
 
-    private static final Pair<AtomicLong, Set<String>> EMPTY_PAIR =
-            new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet());
-
-
-    private Map<String, Pair<AtomicLong, Set<String>>> index;
-
     private final int suppliedThreadAmount;
     private volatile boolean readyMarker = false;
 
@@ -123,9 +117,10 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
         store(tokens, fileName);
     }
 
-    private void store(String[] tokens, String fileName) {
+    @Override
+    protected void store(String[] tokens, String fileName) {
         for (String token : tokens) {
-            Pair<AtomicLong, Set<String>> pair = index.getOrDefault(token,
+            Pair<AtomicLong, Set<String>> pair = (Pair<AtomicLong, Set<String>>) index.getOrDefault(token,
                     new Pair<>(new AtomicLong(0), ConcurrentHashMap.newKeySet()));
 
             AtomicLong oldAtomic = pair.getLeft();
@@ -141,18 +136,11 @@ public class ConcurrentInMemoryInvertedIndex extends AbstractIndex implements In
         }
     }
 
-
-    @Override
-    public Set<String> search(String key) {
-        indexReadinessCheck();
-        return index.getOrDefault(key, EMPTY_PAIR).getRight();
-    }
-
     @Override
     public long getFrequency(String key) {
         indexReadinessCheck();
-        return index.getOrDefault(key, EMPTY_PAIR)
-                .getLeft()
+        return ((AtomicLong) index.getOrDefault(key, EMPTY_PAIR)
+                .getLeft())
                 .get();
     }
 
