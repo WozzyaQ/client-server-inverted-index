@@ -10,7 +10,11 @@
 - [Results](#Results)
 
 # Description
+The main task of the project is to implement parallel datastructure called [inverted index](https://en.wikipedia.org/wiki/Inverted_index) using multithreading i.e. the creation of such structure should be parallelized.
 
+In the project you can find structure like that that was based on `ConcurrentHashMap` and `ConcurrentHashMap.entrySet()`. There is also a single threaded implementation of the index.
+
+In addition to this, I've implemented a simple `client-server` logic with usage of index allowing clients to query an index via sending the queries to server.
 # Usage example
 ```java
 //root dirs to files
@@ -72,7 +76,7 @@ fileNames.forEach(System.out::println);
 
 ### Packages and classes hierarchy
 ```
- pkg
+ com.ua.wozzya
  │   AppClient.java    
  │   AppServer.java                                          
  │   Demo.java                                              
@@ -155,7 +159,9 @@ To run client, run the following
 
 
 # Visualizing execution time
-The plots on different subsets of data can be found [here](./measurements/concurrent-hashmap-to-hashmap-entryset)
+![plot-total](./measurements/concurrent-hashmap-to-hashmap-entryset/plots/total.jpg)
+![close-up](./measurements/concurrent-hashmap-to-hashmap-entryset/plots/close-up.jpg)
+More plots on different subsets of data can be found [here](./measurements/concurrent-hashmap-to-hashmap-entryset)
 If you want to do your test - feel free to customize the code and measurements.\
 For this I have an example file called `PerformanceTest.java` that can be modified on demand (basically a few changes need to be made to get the `.csv` output files)
 
