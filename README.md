@@ -114,16 +114,45 @@ fileNames.forEach(System.out::println);
                  Tokenizer.java
 ```
 # Requirements
-- Java 11 and later
-- bash 4 (Linux) or wsl (Windows)
-
+- Java 11 and later 
+- bash 4 (Linux) or WSL/GitBash/etc (Windows)
+> If you want to mantain the project you'll also need an IDE and maven installed on your machine
 
 # Setup
-
+First of all, we need to clone repository to local machine
 ### Cloning
-
+```sh
+git clone https://github.com/WozzyaQ/client-server-inverted-index.git
+```
 ### Compiling sources
-
+Then, we need to compile sources. From the `project` directory run
+```sh
+cd scripts
+./compile.sh
+```
 ### Running
+To run server, from the `script` directory run the following
+```sh
+./runserver <port> <paths>
+```
+`port` - server's endpoint\
+`paths` - relative or absolute path (minimum 1) pointing to existing folders\
 
-# Results
+> On this step you may face a trouble finding a classloader.\
+To fix this, you'll need to manualy fix scripts\
+If you're running on Windows: change `:` to `;` in scripts files\
+And vice versa for Linux: change `;` to `:`
+
+After the server's script has been ran, the program will scan the folders and build an inverted index
+>Do not start the client until server says that an index was built\
+
+To run client, run the following
+```sh
+./runclient <ip> <port>
+```
+`ip` - server's ip address\
+`port` - server's listening endpoint
+
+
+# Visualizing execution time
+The plots on different subsets of data can be found [here](./measurements/concurrent-hashmap-to-hashmap-entryset)
