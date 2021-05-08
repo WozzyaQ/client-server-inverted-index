@@ -156,3 +156,7 @@ To run client, run the following
 
 # Visualizing execution time
 The plots on different subsets of data can be found [here](./measurements/concurrent-hashmap-to-hashmap-entryset)
+If you want to do your test - feel free to customize the code and measurements.\
+For this I have an example file called `PerformanceTest.java` that can be modified on demand (basically a few changes need to be made to get the `.csv` output files)
+
+Than you can run [Jupyter Notebook](https://jupyter.org) and customize `plots.ipynb` that lies down in the root of the project :)
