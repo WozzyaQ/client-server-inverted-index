@@ -2,6 +2,7 @@
 *.pdf
 
 /temp/**/*.txt
+/target
 
 !/temp/**/*.csv
 
