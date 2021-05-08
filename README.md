@@ -39,36 +39,84 @@ fileNames.forEach(System.out::println);
 ```
 
 # Project structure
-### ok
+### General structure
+```
   .
-  ├─── bin      
-  ├─── documentation
-  ├─── lib     
-  ├─── measurements    
-  │   └─── concurrent-hashmap-to-hashmap-entryset
-  │       └─── plots
-  ├───scripts  
-  ├───src
-  │   ├───main.java.com.ua.wozzya
-  │   │                         └───wozzya
-  │   │                             ├───client
-  │   │                             ├───index
-  │   │                             │   ├───multi
-  │   │                             │   └───single
-  │   │                             ├───server
-  │   │                             └───utils
-  │   │                                 ├───extractor
-  │   │                                 └───tokenizer
-  │   └───test  <-- test (junit4)
-  ├───test  <-- text data 
-  │   ├───neg
-  │   └───pos
-  └───train <-- also text data
-      ├───neg
-      ├───pos
-      └───unsup
+  ├─── bin                                              <-- compiled binaries
+  ├─── documentation 
+  ├─── lib                                              <-- depending libs
+  ├─── measurements                                     <-- measurements folder
+  │   └─── concurrent-hashmap-to-hashmap-entryset       <-- concrete impl test      
+  │       └─── plots     
+  ├─── scripts                                          
+  ├─── src
+  │   ├─── main.java.com.ua.wozzya
+  │   │                         └─── wozzya
+  │   │                             ├─── client
+  │   │                             ├─── index
+  │   │                             │   ├─── multi
+  │   │                             │   └─── single
+  │   │                             ├─── server
+  │   │                             └─── utils
+  │   │                                 ├─── extractor
+  │   │                                 └─── tokenizer
+  │   └─── test                                          <-- test(junit)
+  ├─── test                                              <-- text data for indexing
+  │   ├─── neg
+  │   └─── pos
+  └─── train                                             <- also text data for indexing
+      ├─── neg
+      ├─── pos
+      └─── unsup
+```
 
+### Packages and classes hierarchy
+```
+ pkg
+ │   AppClient.java    
+ │   AppServer.java                                          
+ │   Demo.java                                              
+ │   PerformanceTest.java                                   
+ │
+ ├───client
+ │        AbstractConsoleClient.java
+ │        ActionConstants.java
+ │        CyclicMessenger.java
+ │        SimpleConsoleCyclicMessenger.java
+ ├───index
+     │   AbstractIndex.java
+     │   AbstractIndexBuilder.java
+     │   Index.java
+     │   IndexBuilder.java
+     ├───multi
+     │       ConcurrentIndexBuilder.java
+     │       ConcurrentInMemoryIndexBuilder.java
+     │       ConcurrentInMemoryInvertedIndex.java
+     └───single
+     │       InMemoryIndexBuilder.java
+     │       InMemoryInvertedIndexStandalone.java
+     ├───server
+     │       IndexClientHandler.java
+     │       MultiConnectionIndexServer.java
+     └───utils
+         │   Pair.java
+         │
+         ├───extractor
+         │       DirsFileNamesFileNameListExtractor.java
+         │       Extractor.java
+         │       FileLineIterator.java
+         │       FileNameListExtractor.java
+         │       ReusableFileLineIterator.java
+         │
+         └───tokenizer
+                 SimpleTokenizer.java
+                 Token.java
+                 Tokenizer.java
+```
 # Requirements
+- Java 11 and later
+- bash 4 (Linux) or wsl (Windows)
+
 
 # Setup
 
