@@ -20,6 +20,7 @@ public class ReusableFileLineIteratorTest {
     public void tearDown() {
         TestIndexUtils.tearDown();
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionWhenSupplingADirectory() {
         ReusableFileLineIterator ex = new ReusableFileLineIterator();

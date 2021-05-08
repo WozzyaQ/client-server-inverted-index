@@ -21,8 +21,7 @@ public class TestIndexUtils {
             Path path = Paths.get(TEMP_PATH);
             Path filePath = Paths.get(TEMP_PATH + TEMP_FILE_NAME);
 
-            if (!Files.exists(path)) {
-                Files.createDirectory(path);
+            if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
 
                 FileOutputStream fos = new FileOutputStream(String.valueOf(filePath));
@@ -40,7 +39,7 @@ public class TestIndexUtils {
     }
 
     public static void tearDown() {
-        File dir = new File(TEMP_PATH);
+        File dir = new File(TEMP_PATH + TEMP_FILE_NAME);
         File[] files = dir.listFiles();
 
         if (files != null) {

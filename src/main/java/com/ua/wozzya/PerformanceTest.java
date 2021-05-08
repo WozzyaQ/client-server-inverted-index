@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 public class PerformanceTest {
 
     private static final String PATH_TO_DATA = "../perf-test-data";
-    private static final String MEASUREMENTS_CSV = "./temp/";
+    private static final String MEASUREMENTS_CSV = "./measurements/";
 
     private static final int[] FILE_LIMITS = {1000, 2000, 5000, 10_000, 20_000, 50_000, 100_000};
     private static final int[] THREADS;
