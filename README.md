@@ -10,9 +10,9 @@
 - [Results](#Results)
 
 # Description
-The main task of the project is to implement parallel datastructure called [inverted index](https://en.wikipedia.org/wiki/Inverted_index) using multithreading i.e. the creation of such structure should be parallelized.
+The main task of the project is to implement parallel datastructure called [inverted index](https://en.wikipedia.org/wiki/Inverted_index) using `multithreading` i.e. the creation of such structure should be parallelized.
 
-In the project you can find structure like that that was based on `ConcurrentHashMap` and `ConcurrentHashMap.entrySet()`. There is also a single threaded implementation of the index.
+In the project you can find structure like that that was based on `ConcurrentHashMap` and `ConcurrentHashMap.entrySet()`. There is also a single threaded implementation of the index and a few handy utility classes that can be easily reused in the future projects such as paths extractors and tokenizers.
 
 In addition to this, I've implemented a simple `client-server` logic with usage of index allowing clients to query an index via sending the queries to server.
 # Usage example
@@ -65,10 +65,10 @@ fileNames.forEach(System.out::println);
   │   │                                 ├─── extractor
   │   │                                 └─── tokenizer
   │   └─── test                                          <-- test(junit)
-  ├─── test                                              <-- text data for indexing
+  ├─── test                                              <-- text data to be indexed
   │   ├─── neg
   │   └─── pos
-  └─── train                                             <- also text data for indexing
+  └─── train                                             <- also text data to be indexed
       ├─── neg
       ├─── pos
       └─── unsup
